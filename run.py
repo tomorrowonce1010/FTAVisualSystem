@@ -5,6 +5,10 @@ from __future__ import annotations
 完整流水线：
 1. 生成模式：PDF -> Markdown -> 清理标题层级 -> 文档分块 -> 实体提取 -> 关系提取
 2. 导入模式：直接从已有产物目录读取 chunks / entities / relations，不执行生成步骤
+
+修改说明（2026-04-21）：
+- 分块结果除保存到版本目录外，还会追加到全局 output/chunk.json
+- 实体提取和关系提取改为读写全局文件（output/entities.jsonl, output/entities_merged.json, output/relations.jsonl, output/relations.csv）
 """
 
 import argparse
@@ -13,9 +17,12 @@ import re
 import subprocess
 import sys
 import time
+import json
 from pathlib import Path
+from typing import List, Dict, Set
 
 SCRIPT_DIR = Path(__file__).parent.absolute()
+
 
 def run_command(cmd, description):
     """执行 shell 命令，安全处理 UTF-8 输出，并记录耗时。返回 subprocess.CompletedProcess。"""
@@ -27,7 +34,6 @@ def run_command(cmd, description):
     env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONUTF8"] = "1"
 
-    # 以文本模式捕获输出，避免后续把 stdout 当 bytes 处理导致类型错误
     result = subprocess.run(
         cmd,
         capture_output=True,
@@ -58,6 +64,7 @@ def run_command(cmd, description):
 
     return result
 
+
 def find_md_file(version_dir: Path, pdf_stem: str) -> Path:
     """在版本目录中查找生成的 .md 文件，并等待其写入完成。"""
     candidate = version_dir / f"{pdf_stem}.md"
@@ -76,6 +83,7 @@ def find_md_file(version_dir: Path, pdf_stem: str) -> Path:
         time.sleep(1)
 
     raise RuntimeError(f"MD 文件生成失败或为空: {candidate}")
+
 
 def get_latest_version_dir(output_root: Path, file_id: str) -> Path:
     """获取指定 file_id 下版本号最大的版本目录，例如 output_root/file_id/file_id_vN"""
@@ -98,6 +106,7 @@ def get_latest_version_dir(output_root: Path, file_id: str) -> Path:
         raise FileNotFoundError(f"在 {base_dir} 下未找到任何版本目录 (格式: {file_id}_vN)")
     return latest_dir
 
+
 def _discover_pdf_stem(import_only_dir: Path, explicit_stem: str | None) -> str:
     if explicit_stem:
         return explicit_stem
@@ -108,6 +117,7 @@ def _discover_pdf_stem(import_only_dir: Path, explicit_stem: str | None) -> str:
 
     raise ValueError("导入模式下请提供 --pdf-stem，或保证目录中只有一个 *_chunks.json 文件")
 
+
 def _resolve_artifacts(import_only_dir: Path, pdf_stem: str):
     return {
         "chunks_json": import_only_dir / f"{pdf_stem}_chunks.json",
@@ -116,6 +126,7 @@ def _resolve_artifacts(import_only_dir: Path, pdf_stem: str):
         "relations_jsonl": import_only_dir / f"{pdf_stem}_relations.jsonl",
         "relations_csv": import_only_dir / f"{pdf_stem}_relations.csv",
     }
+
 
 def _run_import_only_mode(args) -> None:
     import_only_dir = Path(args.import_only_dir).resolve()
@@ -148,6 +159,56 @@ def _run_import_only_mode(args) -> None:
     print(f"entities_merged: {artifacts['entities_merged_json']}")
     print(f"relations_jsonl: {artifacts['relations_jsonl']}")
     print("\n说明：本模式只验证并暴露已有产物路径，供上层服务自动同步到 generate-fta。")
+
+
+# ========== 新增：全局文件操作 ==========
+def append_chunks_to_global(chunks: List[Dict], global_chunk_path: Path) -> None:
+    """
+    将新生成的 chunks 追加到全局 chunk.json（JSON 数组）。
+    自动去重：基于 chunk_uid 避免重复追加。
+    """
+    if not chunks:
+        return
+
+    # 读取现有全局 chunk 的 chunk_uid 集合
+    existing_uids: Set[str] = set()
+    if global_chunk_path.exists() and global_chunk_path.stat().st_size > 0:
+        try:
+            with open(global_chunk_path, "r", encoding="utf-8") as f:
+                existing_data = json.load(f)
+            if isinstance(existing_data, list):
+                for item in existing_data:
+                    uid = item.get("chunk_uid")
+                    if uid:
+                        existing_uids.add(uid)
+        except (json.JSONDecodeError, ValueError):
+            # 文件损坏，重新初始化
+            existing_uids = set()
+
+    # 筛选新 chunk
+    new_chunks = [c for c in chunks if c.get("chunk_uid") not in existing_uids]
+    if not new_chunks:
+        print("全局 chunk.json 已包含所有新分块，无需追加")
+        return
+
+    # 合并写入
+    all_chunks = []
+    if global_chunk_path.exists() and global_chunk_path.stat().st_size > 0:
+        try:
+            with open(global_chunk_path, "r", encoding="utf-8") as f:
+                all_chunks = json.load(f)
+            if not isinstance(all_chunks, list):
+                all_chunks = []
+        except json.JSONDecodeError:
+            all_chunks = []
+    all_chunks.extend(new_chunks)
+
+    # 写回
+    global_chunk_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(global_chunk_path, "w", encoding="utf-8") as f:
+        json.dump(all_chunks, f, ensure_ascii=False, indent=2)
+    print(f"已追加 {len(new_chunks)} 个新分块到全局文件: {global_chunk_path}")
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -184,6 +245,13 @@ def main():
     output_root = Path(args.output_dir).resolve()
     output_root.mkdir(parents=True, exist_ok=True)
 
+    # 全局产物路径
+    global_chunk_path = output_root / "chunk.json"
+    global_entities_jsonl = output_root / "entities.jsonl"
+    global_entities_merged = output_root / "entities_merged.json"
+    global_relations_jsonl = output_root / "relations.jsonl"
+    global_relations_csv = output_root / "relations.csv"
+
     pdf_stem = pdf_path.stem
 
     # === 整个流水线开始时间 ===
@@ -214,12 +282,11 @@ def main():
         # 从输出中解析 VERSION_DIR
         version_dir = None
         for line in (result.stdout or "").splitlines():
-            s = line.decode("utf-8", errors="replace") if isinstance(line, (bytes, bytearray)) else str(line)
+            s = line if isinstance(line, str) else line.decode("utf-8", errors="replace")
             if s.startswith("VERSION_DIR="):
                 version_dir = Path(s.split("=", 1)[1].strip())
                 break
         if version_dir is None or not version_dir.exists():
-            # 降级：尝试根据 pdf_stem 查找最新版本目录
             try:
                 version_dir = get_latest_version_dir(output_root, pdf_stem)
                 print(f"未从 MinerU 输出解析到 VERSION_DIR，使用最新版本目录: {version_dir}")
@@ -253,11 +320,10 @@ def main():
             print(f"错误: 找不到有效的 MD 文件 - {exc}")
             sys.exit(1)
 
-    # 版本化知识库：file_version_id 必须是「整份文件版本」的稳定 ID（与 Mongo/Neo4j schema 一致），
-    # 即版本目录名，例如 {pdf_stem}_v1。不能只用 "v1"，否则 chunk_uid、图谱 Entity 无法按版本过滤。
+    # 版本化知识库：file_version_id 必须是「整份文件版本」的稳定 ID
     file_version_id = version_dir.name
 
-    # 后续所有产物都保存在版本目录中
+    # 后续所有产物都保存在版本目录中（分块备份 + MD/清理文件）
     result_dir = version_dir
 
     if not args.skip_clean:
@@ -286,18 +352,24 @@ def main():
         print(f"错误: 找不到 {chunk_script}")
         sys.exit(1)
 
-    chunks_json = result_dir / f"{pdf_stem}_chunks.json"
+    # 版本目录中的备份分块文件
+    backup_chunks_json = result_dir / f"{pdf_stem}_chunks.json"
     cmd_chunk = [
         sys.executable,
         str(chunk_script),
         "--input", str(md_file),
-        "--output", str(chunks_json),
+        "--output", str(backup_chunks_json),
         "--chunk_size", str(args.chunk_size),
         "--file_id", pdf_stem,
         "--file_version_id", file_version_id,
     ]
     run_command(cmd_chunk, "文档分块")
-    print(f"分块结果保存至: {chunks_json}")
+    print(f"分块结果备份至: {backup_chunks_json}")
+
+    # 读取刚刚生成的分块结果，追加到全局 chunk.json
+    with open(backup_chunks_json, "r", encoding="utf-8") as f:
+        chunks_data = json.load(f)
+    append_chunks_to_global(chunks_data, global_chunk_path)
 
     if args.skip_entity:
         print("已跳过实体提取，流程结束。")
@@ -311,21 +383,18 @@ def main():
         print(f"错误: 找不到 {entity_script}")
         sys.exit(1)
 
-    entities_json = result_dir / f"{pdf_stem}_entities.jsonl"
-    merged_json = result_dir / f"{pdf_stem}_entities_merged.json"
-
     cmd_entity = [
         sys.executable,
         str(entity_script),
-        "--input", str(chunks_json),
-        "--output-entities", str(entities_json),
-        "--output-merged", str(merged_json),
+        "--input", str(global_chunk_path),
+        "--output-entities", str(global_entities_jsonl),
+        "--output-merged", str(global_entities_merged),
     ]
     if args.print_raw_text:
         cmd_entity.append("--print-raw-text")
     run_command(cmd_entity, "实体提取")
-    print(f"实体结果: {entities_json}")
-    print(f"合并实体: {merged_json}")
+    print(f"实体结果: {global_entities_jsonl}")
+    print(f"合并实体: {global_entities_merged}")
 
     if args.skip_relation:
         print("已跳过关系统取，流程结束。")
@@ -339,33 +408,33 @@ def main():
         print(f"错误: 找不到 {relation_script}")
         sys.exit(1)
 
-    relations_json = result_dir / f"{pdf_stem}_relations.jsonl"
-    relations_csv = result_dir / f"{pdf_stem}_relations.csv"
-
     cmd_relation = [
         sys.executable,
         str(relation_script),
-        "--input-chunks", str(chunks_json),
-        "--input-entities", str(merged_json),
-        "--output-relations", str(relations_json),
-        "--output-csv", str(relations_csv),
+        "--input-chunks", str(global_chunk_path),
+        "--input-entities", str(global_entities_merged),
+        "--output-relations", str(global_relations_jsonl),
+        "--output-csv", str(global_relations_csv),
     ]
     if args.print_raw_text:
         cmd_relation.append("--print-raw-text")
     run_command(cmd_relation, "关系提取")
-    print(f"关系 JSON: {relations_json}")
-    print(f"关系 CSV:  {relations_csv}")
+    print(f"关系 JSON: {global_relations_jsonl}")
+    print(f"关系 CSV:  {global_relations_csv}")
 
     pipeline_elapsed = time.time() - pipeline_start
     print("\n=== 流水线执行完成 ===")
     print(f"整个流水线耗时: {pipeline_elapsed:.2f} 秒")
     print(f"结果存放目录: {result_dir}")
-    print("生成文件:")
-    print(f"  - 分块: {chunks_json}")
-    print(f"  - 实体 (逐块): {entities_json}")
-    print(f"  - 实体 (合并): {merged_json}")
-    print(f"  - 关系 (逐块): {relations_json}")
-    print(f"  - 关系 (CSV):  {relations_csv}")
+    print("生成文件（全局）:")
+    print(f"  - 分块: {global_chunk_path}")
+    print(f"  - 实体 (逐块): {global_entities_jsonl}")
+    print(f"  - 实体 (合并): {global_entities_merged}")
+    print(f"  - 关系 (逐块): {global_relations_jsonl}")
+    print(f"  - 关系 (CSV):  {global_relations_csv}")
+    print("备份文件（版本目录）:")
+    print(f"  - 分块: {backup_chunks_json}")
+
 
 if __name__ == "__main__":
     main()

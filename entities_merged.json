@@ -1,0 +1,4914 @@
+[
+    {
+        "name": "SIMATIC S7 诊断报警",
+        "entity_type": "故障原因与现象",
+        "description": "SIMATIC S7 诊断报警数据组 DS1 位编号识别的故障，对应十进制编码 0~19，涵盖硬件、软件、通讯故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "诊断激活时显示对应故障文本，关联 0~19 十进制值",
+        "investigateMethod": "检查 DS1 数据组位编号，对比标准故障文本",
+        "repairMethod": "根据具体位编号对应的硬件或软件问题进行修复",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::4"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "R2124 报警值",
+        "entity_type": "故障原因与现象",
+        "description": "设备内部诊断专用的十进制报警值，关联故障代码信息值",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "结合故障代码查看 r2124 具体数值以获取详细诊断信息",
+        "investigateMethod": "通过操作面板或调试软件读取寄存器 r2124 内容",
+        "repairMethod": "根据数值含义对照手册进行相应诊断修复",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::9"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "硬件/软件故障",
+        "entity_type": "故障原因与现象",
+        "description": "PROFIdrive 编号 1 的故障类别，涵盖硬件损坏或软件配置错误",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "根据具体代码区分硬件根源或软件配置问题",
+        "investigateMethod": "分析故障代码所属类别及受影响组件，检查系统日志",
+        "repairMethod": "针对性修复硬件连接或更新软件配置参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::9"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数不匹配 & 过载",
+        "entity_type": "逻辑与",
+        "description": "参数设置错误与过载现象同时存在，互为因果",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当过载发生时，必须检查参数匹配性",
+        "investigateMethod": "对比参数设置值与电机铭牌数据",
+        "repairMethod": "修正参数并复位过载故障",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "PROFIBUS 总线通讯故障",
+        "entity_type": "故障原因与现象",
+        "description": "PROFIBUS 通道诊断发现的故障，通过 ErrorType 标识，对应十进制编码 16~31，涉及总线通讯及通道故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 16~31 十进制值时，确认为 PROFIBUS 总线或通道故障",
+        "investigateMethod": "读取 ErrorType，查看标准文件及 GSD 文件中的故障文本",
+        "repairMethod": "检查 PROFIBUS 总线终端电阻，更换通讯线缆，检查从站地址",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::4"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "电机模块控制故障",
+        "entity_type": "故障原因与现象",
+        "description": "关联电机过载、接地/相位短路、制动控制故障，故障可能传导至安全监控系统",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "触发安全停止响应时，重点检查电机模块及制动控制",
+        "investigateMethod": "检查电机绕组绝缘，测量制动电阻及控制信号波形",
+        "repairMethod": "修复短路点，更换制动组件或电机模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::0"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "ET 200 设备通道异常",
+        "entity_type": "故障原因与现象",
+        "description": "SIMATIC ET 200pro FC-2 设备通道诊断异常，对应十进制编码 9~31",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "关联故障编码为 9~31 时，指示 ET 200 设备通道异常",
+        "investigateMethod": "检查 ET 200pro FC-2 设备状态，读取 ErrorType 信息",
+        "repairMethod": "更换故障模块，检查设备配置参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::4"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "过热",
+        "entity_type": "故障原因与现象",
+        "description": "温度控制功能异常，导致设备温度超过安全阈值",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当检测到过热报警时，立即检查冷却装置及风扇运行状态",
+        "investigateMethod": "使用测温仪测量组件温度，检查风道是否堵塞",
+        "repairMethod": "清理风道，更换故障风扇或冷却装置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::1"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "NAMUR 接口故障识别",
+        "entity_type": "故障原因与现象",
+        "description": "通过参数 r3113 的位编号识别故障，关联 DP、ET 200 接口的部分故障信息，取值 0~15",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "读取 r3113 参数位编号，辅助诊断 DP 或 ET 200 接口故障",
+        "investigateMethod": "监控参数 r3113 状态位，对比位编号定义表",
+        "repairMethod": "根据位编号指向的具体故障源进行针对性修复",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::4"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "诊断接口及协议故障",
+        "entity_type": "故障原因与现象",
+        "description": "本章涉及的诊断接口及协议相关的通讯故障类别，是故障树分析中通讯故障分支的核心数据支撑",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统通讯异常时，参考本章定义的接口及协议故障编码进行排查",
+        "investigateMethod": "检查各接口诊断数据，对比协议标准故障文本",
+        "repairMethod": "根据具体接口类型修复通讯链路或配置参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::4"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "常用参数及故障值异常",
+        "entity_type": "故障原因与现象",
+        "description": "涉及驱动系统核心参数及故障值的取值含义及范围异常，是故障树分析的关键数据",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统行为异常时，优先检查核心参数及故障缓冲器取值",
+        "investigateMethod": "读取故障缓冲器 r0949 及报警缓冲器 r2124",
+        "repairMethod": "核对参数取值范围，修正配置错误",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数与实际电机及负载不匹配",
+        "entity_type": "故障原因与现象",
+        "description": "电机及负载参数设置值与实际硬件铭牌或负载需求不一致",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当触发过载或控制异常时，优先核对电机铭牌数据",
+        "investigateMethod": "检查 p0304, p0305, p0310 等参数值是否与铭牌一致",
+        "repairMethod": "修改参数值以严格遵循电机铭牌及负载需求",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "ACX 需要存储所有参数",
+        "entity_type": "故障原因与现象",
+        "description": "故障现象提示 ACX 需要存储所有参数，防止配置丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当提示需要存储参数时，必须在断电前完成保存操作",
+        "investigateMethod": "检查参数修改记录及存储介质状态，确认是否有未保存更改",
+        "repairMethod": "执行保存所有参数指令，确认存储成功提示",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::9"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "常用参数及故障值",
+        "entity_type": "故障原因与现象",
+        "description": "文档章节类别，涉及系统常用参数设置及故障值定义的说明",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当遇到参数相关故障时，优先查阅此章节获取参数定义",
+        "investigateMethod": "参考文档章节 1.2 内容，核对参数列表及故障值含义",
+        "repairMethod": "遵循文档指导调整参数设置或解读故障值",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制单元软件及通讯故障",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元内部软件运行、外部通讯交互、安全通道监控等异常，涉及参数配置及安全监控故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现软件错误或通讯交互异常时，优先检查控制单元状态",
+        "investigateMethod": "读取故障诊断信号，检查固件版本及参数配置一致性",
+        "repairMethod": "重新配置参数，升级固件或更换控制单元硬件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::0"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "辅助组件硬件故障",
+        "entity_type": "故障原因与现象",
+        "description": "底事件之一，涵盖风扇、滤波器等辅助硬件异常，影响系统辅助功能",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "系统辅助功能异常时，检查相关组件状态及连接",
+        "investigateMethod": "检查风扇运转情况、滤波器状态及电源输入质量",
+        "repairMethod": "更换损坏的辅助组件，清理灰尘或修复连接线路",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 61
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::6"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "通讯故障 & 安全停止 STOP A",
+        "entity_type": "逻辑与",
+        "description": "PROFIsafe 通讯故障同时触发安全停止 STOP A，导致系统停机",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "同时出现通讯中断和 STOP A 时，重点检查安全通讯链路",
+        "investigateMethod": "先恢复通讯，再复位安全停止",
+        "repairMethod": "修复通讯故障后系统自动或手动复位",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::5"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "文件校验和出错",
+        "entity_type": "故障原因与现象",
+        "description": "A01016 信息值 0 代表的异常条件，表示文件完整性受损",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 A01016 触发且 r2124 为 0 时出现",
+        "investigateMethod": "计算文件哈希值并与标准值比对",
+        "repairMethod": "重新写入正确的文件内容",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "驱动系统硬件异常",
+        "entity_type": "故障原因与现象",
+        "description": "硬件故障树的顶事件，代表驱动系统整体硬件层面的异常状态，涵盖各类底层硬件故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统发生严重硬件故障时，以此为起点进行故障树分析，排查底事件",
+        "investigateMethod": "检查故障缓冲器，确认顶事件触发条件，查看关联的底事件组件",
+        "repairMethod": "根据底事件定位具体故障组件，更换或修复相应硬件模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 61
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::6"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "编码器信号丢失故障",
+        "entity_type": "故障原因与现象",
+        "description": "包括实际值错误、信号丢失，直接影响控制精度及系统稳定性",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "控制精度下降或系统不稳定时，检查编码器及传感器",
+        "investigateMethod": "使用示波器测量编码器信号波形，检查线缆连接及屏蔽",
+        "repairMethod": "重新插拔线缆，更换编码器或传感器模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::0"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "内部软件超时",
+        "entity_type": "故障原因与现象",
+        "description": "F01023 对应的具体故障现象，表示软件执行超过预定时间",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "伴随 F01023 出现，指示软件负载过高或硬件性能不足",
+        "investigateMethod": "分析系统日志，监控任务执行时间",
+        "repairMethod": "优化软件配置或升级硬件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "辅助组件故障",
+        "entity_type": "故障原因与现象",
+        "description": "包括制动模块、电源滤波器、冷却装置、风扇等辅助功能组件的异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统制动、滤波或温度控制功能失效时，应排查辅助组件",
+        "investigateMethod": "逐一检查制动模块、滤波器、冷却装置及风扇的工作状态",
+        "repairMethod": "更换损坏的辅助组件，恢复辅助功能",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::1"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "写 RAM 失败",
+        "entity_type": "故障原因与现象",
+        "description": "F01020 对应的具体故障现象，表示控制单元存储器写入异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "伴随 F01020 出现，指示硬件存储故障",
+        "investigateMethod": "使用诊断工具测试 RAM 区域读写",
+        "repairMethod": "更换存储芯片或控制单元主板",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "核心组件故障",
+        "entity_type": "故障原因与现象",
+        "description": "章节标题指示的故障类别，涉及核心组件的硬件或功能异常，间接影响系统正常运行",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统出现不明原因异常时，优先检查核心组件状态及章节路径指示的关联项",
+        "investigateMethod": "查阅核心组件说明文档，检查组件指示灯及状态寄存器",
+        "repairMethod": "根据具体组件故障类型进行更换或修复",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::1"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "硬件故障代码",
+        "entity_type": "故障原因与现象",
+        "description": "核心数据之一，用于标识具体硬件故障类型的代码，如故障值含义",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现故障时，首要记录故障代码以便查询具体含义",
+        "investigateMethod": "读取驱动器故障寄存器，对照手册查询代码定义",
+        "repairMethod": "根据代码含义执行对应处理细则，复位或更换部件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 61
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::6"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "核心组件故障关联",
+        "entity_type": "故障原因与现象",
+        "description": "章节标题指示的核心组件故障范围，涵盖控制单元、功率单元等各类组件的故障关联范围",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "进行故障树分析时，优先参考核心组件说明中的故障关联范围",
+        "investigateMethod": "查阅组件维度的基础支撑数据，确认故障所属组件类别",
+        "repairMethod": "根据具体组件故障类型执行相应的排查与修复流程",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::0"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "安全停止 STOP A",
+        "entity_type": "故障原因与现象",
+        "description": "通讯故障触发的安全停止状态之一，支持 SIL2 安全等级",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 STOP A 时检查安全指令传输及反馈链路",
+        "investigateMethod": "监控安全输入输出信号状态",
+        "repairMethod": "恢复通讯后复位安全停止状态",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::5"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "电机额定电压参数不匹配",
+        "entity_type": "故障原因与现象",
+        "description": "电机额定电压参数 p0304 设置值与实际电机不符",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "电压参数错误会导致控制性能下降或故障",
+        "investigateMethod": "读取 p0304 参数值并与电机铭牌额定电压对比",
+        "repairMethod": "将 p0304 修改为电机铭牌上的额定电压值",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01032 故障代码",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码 A01032(F)，类别为硬件/软件故障，驱动对象为所有目标",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现该代码时，检查参数存储状态及设备内部诊断信息",
+        "investigateMethod": "查看信息值格式%1 关联的报警值 r2124，确认具体诊断内容",
+        "repairMethod": "执行参数存储操作，确保配置保存至非易失性存储器",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::9"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "制动故障",
+        "entity_type": "故障原因与现象",
+        "description": "制动模块工作异常，导致系统制动功能失效或异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现制动故障时，优先检查制动模块连接及制动电阻",
+        "investigateMethod": "测量制动单元输入输出电压，检查制动电阻阻值",
+        "repairMethod": "修复制动回路，更换损坏的制动模块或电阻",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::1"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "安全停止 STOP F",
+        "entity_type": "故障原因与现象",
+        "description": "通讯故障触发的安全停止状态之一，支持 SIL2 安全等级",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 STOP F 时检查安全指令传输及反馈链路",
+        "investigateMethod": "监控安全输入输出信号状态",
+        "repairMethod": "恢复通讯后复位安全停止状态",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::5"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "访问存储器时出现应答延迟",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元访问内部存储器时响应时间超过阈值，导致 F01003 故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统运行卡顿或报 F01003 时怀疑此现象",
+        "investigateMethod": "使用诊断工具监测存储器读写延迟",
+        "repairMethod": "优化固件或更换硬件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::7"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "协议参数不匹配",
+        "entity_type": "故障原因与现象",
+        "description": "目标地址、源地址、看门狗时间等需与上位安全控制器匹配，不匹配导致故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "配置协议参数时必须与上位安全控制器一致",
+        "investigateMethod": "对比本地与上位控制器的地址及看门狗设置",
+        "repairMethod": "修改参数使其与上位安全控制器匹配",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::5"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制异常",
+        "entity_type": "故障原因与现象",
+        "description": "系统控制逻辑出现偏差，无法正常运行",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "参数不匹配可能导致控制异常",
+        "investigateMethod": "检查电流控制器采样时间 p0115 及制动控制设置 p1278",
+        "repairMethod": "重新配置控制参数以匹配负载需求",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "隐性故障",
+        "entity_type": "故障原因与现象",
+        "description": "系统运行中不易直接察觉的故障，需通过日志定位",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "激活系统日志 p9930 可辅助定位隐性故障",
+        "investigateMethod": "设置 p9930=1 激活日志，分析系统运行及故障信息",
+        "repairMethod": "根据日志记录修复潜在问题",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "过载",
+        "entity_type": "故障原因与现象",
+        "description": "电机或负载超过额定能力运行的故障现象",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现过载时检查参数匹配性及实际负载情况",
+        "investigateMethod": "监控电流控制器采样时间及额定电流参数",
+        "repairMethod": "调整负载或修正电机额定电流参数 p0305",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::3"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "风扇使用寿命到期",
+        "entity_type": "故障原因与现象",
+        "description": "A01013 对应的具体故障现象，表示冷却风扇达到寿命极限",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r2124 值为 0 或 1 时触发",
+        "investigateMethod": "检查风扇物理状态及运行时间记录",
+        "repairMethod": "更换风扇组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "诊断接口及协议基础",
+        "entity_type": "故障原因与现象",
+        "description": "章节标题定义的故障类别，涉及诊断接口及协议基础相关的通讯异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现通讯类故障时，优先查阅本章节关于协议基础的配置要求",
+        "investigateMethod": "检查诊断接口物理状态及协议版本信息",
+        "repairMethod": "根据协议基础规范重新初始化接口",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::5"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "DRIVE-CLIQ 组件属性变化",
+        "entity_type": "故障原因与现象",
+        "description": "拓扑结构中 DRIVE-CLiQ 组件的属性发生意外变化，导致 F01014 故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现拓扑错误时检查组件属性一致性",
+        "investigateMethod": "检查 DRIVE-CLiQ 连线及组件识别状态",
+        "repairMethod": "重新插拔组件或更新拓扑配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::7"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "通讯中断及数据传输错误",
+        "entity_type": "故障原因与现象",
+        "description": "涉及 DRIVE-CLiQ、PROFIBUS/PROFINET 接口通讯中断、数据传输错误，影响系统协同运行",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "系统协同运行受影响时，检查通讯组件及接口状态",
+        "investigateMethod": "检查通讯线缆屏蔽及接地，监控通讯报文错误计数",
+        "repairMethod": "更换通讯线缆或通讯板，重新配置通讯参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::0"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "滤波异常",
+        "entity_type": "故障原因与现象",
+        "description": "电源滤波器工作异常，导致电磁兼容滤波功能失效",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现滤波异常时，检查电源滤波器连接及接地情况",
+        "investigateMethod": "使用示波器测量电源输入端干扰波形，检查滤波器参数",
+        "repairMethod": "重新接地或更换电源滤波器",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::1"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "固件版本错误",
+        "entity_type": "故障原因与现象",
+        "description": "A01016 信息值 3 代表的异常条件，表示固件版本不匹配",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 A01016 触发且 r2124 为 3 时出现",
+        "investigateMethod": "检查当前固件版本号与要求版本",
+        "repairMethod": "升级或降级固件至正确版本",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "组件列表被更改",
+        "entity_type": "故障原因与现象",
+        "description": "A01017 对应的具体故障现象，表示系统组件配置发生变化",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "伴随 A01017 出现，指示拓扑结构异常",
+        "investigateMethod": "检查 DRIVE-CLiQ 连接及组件识别状态",
+        "repairMethod": "重新配置组件列表或更换故障组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "安全类故障",
+        "entity_type": "故障原因与现象",
+        "description": "安全功能参数取值错误或不一致触发的故障，涉及安全运动监控及制动控制",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 p9601 等安全参数设置错误时，会触发此类故障",
+        "investigateMethod": "检查 p9500-p9899 系列安全参数取值及一致性",
+        "repairMethod": "修正安全参数取值，确保符合设备配置要求",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "通讯失步",
+        "entity_type": "故障原因与现象",
+        "description": "通讯参数取值未匹配上位控制器及总线配置导致的同步丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当通讯参数 p9510 等配置不匹配时，可能发生通讯失步",
+        "investigateMethod": "检查 PROFIBUS 主站及 SIPROFIsafe 总线配置参数",
+        "repairMethod": "调整通讯参数以匹配上位控制器及总线配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数丢失",
+        "entity_type": "故障原因与现象",
+        "description": "参数备份及复位操作不当导致驱动对象参数丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当执行 p0977 等操作不当时，可能导致参数丢失",
+        "investigateMethod": "检查参数备份状态及 p0971/p0977 操作记录",
+        "repairMethod": "重新保存所有参数或从备份恢复配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "配置异常",
+        "entity_type": "故障原因与现象",
+        "description": "参数操作不当导致的系统配置状态异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当参数复位或确认组件更换操作错误时，可能引发配置异常",
+        "investigateMethod": "检查 p0976 热启动及 p9702 组件更换确认状态",
+        "repairMethod": "重新执行参数复位或组件更换确认流程",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "组件状态异常",
+        "entity_type": "故障原因与现象",
+        "description": "报警缓冲器 r2124 特定取值对应的组件状态异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r2124 取值在 0-999 范围内特定值时，指示组件异常",
+        "investigateMethod": "读取 r2124 报警值，关联组件编号及故障等级",
+        "repairMethod": "根据组件编号定位具体硬件并进行维修或更换",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障缓冲器 R0949 异常",
+        "entity_type": "故障原因与现象",
+        "description": "用于记录各类故障补充信息的参数取值异常，用于定位故障具体原因",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "不同故障代码对应不同的 r0949 取值，用于定位原因",
+        "investigateMethod": "读取 r0949[0..63] 十六进制或十进制值",
+        "repairMethod": "根据公开取值含义定位故障具体原因并处理",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "报警缓冲器 R2124 异常",
+        "entity_type": "故障原因与现象",
+        "description": "用于记录各类报警补充信息及组件状态的参数异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "主要关联组件编号、故障等级，部分取值对应状态异常",
+        "investigateMethod": "读取 r2124[0.7] 十进制值，分析组件状态",
+        "repairMethod": "根据报警补充信息调整组件状态或修复硬件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 25
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::2"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "组件损坏或接触不良",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元主板、内部存储器、风扇等组件物理损坏或连接接触不良",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统报错指向硬件时，检查物理连接和组件完整性",
+        "investigateMethod": "目视检查组件外观，重新插拔连接件，测量关键信号",
+        "repairMethod": "修复接触不良点位或更换损坏的物理组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "固件文件出错",
+        "entity_type": "故障原因与现象",
+        "description": "固件文件损坏或校验错误，对应参数 r9925 显示异常状态",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r9925 指示错误时，检查固件完整性及存储模块",
+        "investigateMethod": "读取 r9925 状态，对比固件版本，检查存储卡接口",
+        "repairMethod": "重新下载或升级固件，更换故障存储卡",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "接口松动或损坏",
+        "entity_type": "故障原因与现象",
+        "description": "DRIVE-CLiQ、PROFIBUS/PROFINET 或存储卡接口物理连接松动或损坏",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "通信失败或固件读取异常时，检查接口物理状态",
+        "investigateMethod": "检查接口引脚是否弯曲，线缆是否松动，测量通断",
+        "repairMethod": "重新插拔接口，修复引脚或更换损坏的接口模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "数据传输失败",
+        "entity_type": "故障原因与现象",
+        "description": "组件间通信中断，数据无法正常传输，常由接口问题引起",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "通信超时或丢失时，检查接口及线路连接质量",
+        "investigateMethod": "使用诊断工具监测通信报文，检查屏蔽及接地",
+        "repairMethod": "修复接口连接，更换通信线缆或改善电磁环境",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数异常或操作不当",
+        "entity_type": "故障原因与现象",
+        "description": "系统参数设置错误或维护操作不规范，加剧故障或导致无法恢复",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "故障无法恢复时，检查近期参数修改记录及操作流程",
+        "investigateMethod": "对比备份参数，检查 p0976/p0977 等操作记录",
+        "repairMethod": "恢复出厂设置，重新配置参数或规范操作流程",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01014",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，组件关联控制单元，故障现象为拓扑：DRIVE-CLiQ 组件属性变化",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01014 时，检查拓扑配置与实际情况是否一致",
+        "investigateMethod": "对比当前拓扑与配置拓扑，检查组件号",
+        "repairMethod": "重新配置拓扑或更换变动组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::7"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01015",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，组件为控制单元，故障现象为内部软件错误，反应 OFF2",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01015 需立即处理软件错误",
+        "investigateMethod": "检查固件版本兼容性，读取 r0949 十进制故障值",
+        "repairMethod": "重新上电应答，升级固件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::7"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01034",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为参数设置出错，现象为参考值更改后参数值计算失败",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01034 时，检查关联参数 r0949 及单位转换设置",
+        "investigateMethod": "读取故障值 r0949，确认无法重新计算的参数值",
+        "repairMethod": "修正参数设置，重新计算或恢复默认配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "SICU:STOPA 被触发",
+        "entity_type": "故障原因与现象",
+        "description": "F01600 故障的具体现象，表示安全控制单元停止请求被激活，属于异常状态事件",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "观察到 STOPA 触发时，关联检查 F01600 故障代码及监控通道状态",
+        "investigateMethod": "检查安全监控通道状态及停止请求来源，确认是否为另一个监控通道发出",
+        "repairMethod": "清除停止请求源，复位安全状态，检查监控通道逻辑",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::13"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "并联功率单元 STO 输入不同",
+        "entity_type": "故障原因与现象",
+        "description": "F01612 故障的具体现象，表示并联功率单元间 STO 信号不一致，属于配置或接线异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 STO 输入不同时，检查并联单元间的信号同步性及数字输入端映像",
+        "investigateMethod": "测量各功率单元 STO 输入端电压及信号时序，对比二进制映像",
+        "repairMethod": "调整 STO 接线或配置，确保所有并联单元信号一致",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::13"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01023",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为硬件/软件故障，现象为内部软件超时",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01023 时，检查系统负载及软件执行周期",
+        "investigateMethod": "监控软件任务执行时间，检查通信周期",
+        "repairMethod": "优化配置参数，必要时更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01033",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为参数设置出错，现象为单位转换参考参数无效",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01033 时，检查参考参数是否被设为 0.0",
+        "investigateMethod": "读取故障值 r0949，查找值为 0.0 的参考参数",
+        "repairMethod": "修改无效的参考参数为合法值",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "组件配置不当",
+        "entity_type": "故障原因与现象",
+        "description": "液压模块、制动模块、安全制动适配器等组件参数配置与实际硬件不匹配",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "故障发生时，核对组件配置参数与实际硬件型号",
+        "investigateMethod": "对比实际硬件型号与软件配置参数，检查拓扑结构",
+        "repairMethod": "修改配置参数以匹配实际硬件，重新下载配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::16"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数取值不一致或错误",
+        "entity_type": "故障原因与现象",
+        "description": "安全功能使能、制动控制等参数（如 p9601-p9826）设置错误或相互冲突",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "触发安全类故障时，检查 p9601 至 p7015 等相关参数设置",
+        "investigateMethod": "导出参数列表，校验参数一致性及合法性，检查校验和",
+        "repairMethod": "修正错误参数，恢复出厂设置或重新下载正确配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::16"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "安全类及制动类故障",
+        "entity_type": "故障原因与现象",
+        "description": "因参数错误导致的系统安全功能或制动功能异常触发",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现安全报警，重点排查安全参数设置及制动逻辑",
+        "investigateMethod": "查看安全功能状态字，分析制动逻辑序列，检查反馈信号",
+        "repairMethod": "调整安全参数，测试制动功能，确认安全回路正常",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::16"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "接口松动或接线错误",
+        "entity_type": "故障原因与现象",
+        "description": "DRIVE-CLiQ、X272、X281/X282 等接口物理连接松动或线序错误",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "信号异常时，检查相关接口连接情况及接线图纸",
+        "investigateMethod": "重新插拔接口，检查接线图纸与实物，测量接口电压",
+        "repairMethod": "紧固接口螺丝，纠正接线错误，更换损坏接口端子",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::16"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "信号传输异常",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元与模块间通讯或信号传输中断、失真，导致 EP/STO 端子异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "通讯故障时，检查接口及屏蔽接地，测量信号波形",
+        "investigateMethod": "使用示波器测量信号波形，检查通讯状态寄存器",
+        "repairMethod": "更换干扰线缆，优化接地处理，修复信号回路",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::16"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 F01600",
+        "entity_type": "故障原因与现象",
+        "description": "安全监控通道发现一处故障，驱动对象为 SERVO 等，关联控制单元及电机模块，现象为 SICU:STOPA 被触发",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01600 时，检查故障值 r0949 确定具体监控通道问题及停止请求来源",
+        "investigateMethod": "读取 r0949 值，0 表示停止请求，6000-6999 表示 PROFIsafe 控制故障，检查交叉比较数据",
+        "repairMethod": "检查控制单元及电机模块关联，复位安全状态或更换故障组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::13"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 F01611",
+        "entity_type": "故障原因与现象",
+        "description": "安全监控通道发现一处故障，驱动对象为 HLA，关联控制单元及液压模块，现象为 SIP1 (CU): 某一监控通道故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01611 时，重点检查液压模块与控制单元的关联及监控通道状态",
+        "investigateMethod": "读取 r0949 值，检查 HLA 相关交叉比较数据编号，确认信息值格式",
+        "repairMethod": "检查液压模块硬件及通信线路，重新上电测试或修正配置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::13"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 F01612",
+        "entity_type": "故障原因与现象",
+        "description": "安全监控通道发现一处故障，驱动对象为 SERVO 等，关联控制单元及功率单元，现象为并联功率单元上 STO 输入不同",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01612 时，检查并联功率单元的 STO 输入信号一致性及二进制映像",
+        "investigateMethod": "读取 r0949 二进制映像，检查控制单元数字输入端状态，测量 STO 信号",
+        "repairMethod": "校准 STO 输入信号，检查并联功率单元接线，确保信号同步",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::13"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 A01006",
+        "entity_type": "故障原因与现象",
+        "description": "DRIVE-CLiQ 组件的固件需要升级，含编码器模块",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01006 时检查关联报警值 r2124 确认组件号",
+        "investigateMethod": "读取 r2124 确定 DRIVE-CLiQ 组件号，检查当前固件版本",
+        "repairMethod": "对指定的 DRIVE-CLiQ 组件及编码器模块进行固件升级",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::22"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 A01007",
+        "entity_type": "故障原因与现象",
+        "description": "DRIVE-CLiQ 组件需要重新上电，含编码器模块",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01007 时尝试对组件重新上电",
+        "investigateMethod": "读取 r2124 确认组件号，检查电源供应稳定性",
+        "repairMethod": "断开并重新接通 DRIVE-CLiQ 组件电源，必要时更换组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::22"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 F01012",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，项目转化出错含编码器相关参数",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01012 时检查关联故障值 r0949 确认参数号",
+        "investigateMethod": "读取 r0949 定位引发错误的参数，检查项目配置",
+        "repairMethod": "修正错误参数，重新进行项目转化或恢复默认设置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::22"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障代码 F01009",
+        "entity_type": "故障原因与现象",
+        "description": "电子组件过热，控制单元 CU 过热间接影响编码器信号",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01009 时立即检查控制单元散热环境",
+        "investigateMethod": "测量控制单元温度，检查风扇运行及通风情况",
+        "repairMethod": "改善散热条件，清理灰尘或更换过热控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::22"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01631 电机抱闸配置无意义",
+        "entity_type": "故障原因与现象",
+        "description": "关联制动控制配置，现象为 SIP1(CU) 电机抱闸/SBC 配置无意义，无故障反应",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01631 时，核对驱动器参数配置是否与硬件匹配",
+        "investigateMethod": "检查电机模块及制动组件的参数设置，确认 SBC 配置",
+        "repairMethod": "修正配置参数使其符合硬件规格，重新保存参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::14"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01640 组件更换识别故障",
+        "entity_type": "故障原因与现象",
+        "description": "一般驱动故障，识别出组件更换并需应答，涉及控制单元或电机/液压模块",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01640 需确认是否进行了硬件更换，检查 r0949 二进制位",
+        "investigateMethod": "读取 r0949 位 0 和位 1，确认控制单元或模块是否变更",
+        "repairMethod": "执行组件更换后的应答操作，保存新组件信息",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::14"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01023 内部软件超时",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元内部软件运行超时，可能由电压波动或软件负载过大引起",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01023 时，优先排查电压波动及驱动功能启用情况",
+        "investigateMethod": "检查输入电压稳定性，查看已启用的驱动功能列表及负载状态",
+        "repairMethod": "重新为所有组件上电，禁用非必要功能，升级固件至最新版本",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01013 风扇使用寿命到期",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元风扇达到使用寿命极限，影响设备散热性能",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01013 时，必须更换风扇并复位工作时间计数器",
+        "investigateMethod": "检查风扇型号匹配性，检查控制单元散热通道是否堵塞",
+        "repairMethod": "更换匹配型号风扇，设置 p3961=0 复位计数器，清理灰尘杂物",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01016 固件被修改",
+        "entity_type": "故障原因与现象",
+        "description": "非易失性存储器上的固件文件被修改或损坏，导致系统异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01016 时，需恢复出厂设置并重新加载正确的固件文件",
+        "investigateMethod": "备份重要参数，检查 r9925 参数确认出错文件，检查存储器状态",
+        "repairMethod": "恢复出厂设置，从官方渠道获取固件重新安装，必要时更换存储卡",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01017 组件列表被更改",
+        "entity_type": "故障原因与现象",
+        "description": "存储卡上的组件列表配置文件被更改或出错，影响驱动系统配置",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01017 时，需根据 r2124 定位出错文件并恢复出厂设置",
+        "investigateMethod": "根据 r2124 参数 xyz 取值定位出错目录及文件，检查备份文件",
+        "repairMethod": "从备份提取文件替换，重新安装基础配置文件，格式化存储卡后重加载",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01032 需要存储所有参数",
+        "entity_type": "故障原因与现象",
+        "description": "驱动对象参数未完整保存至非易失性存储器，可能导致启动异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01032 时，必须执行完整参数备份操作",
+        "investigateMethod": "检查参数是否已保存至 ROM，检查启动加载状态及参数完整性",
+        "repairMethod": "执行 p0977=1 或“从 RAM 向 ROM 复制”，重新上电检查故障是否消除",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "瞬时电压波动",
+        "entity_type": "故障原因与现象",
+        "description": "输入电压瞬间不稳定，可能导致控制单元软件运行超时故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "若 F01023 频繁出现，需重点检查供电环境是否存在电压波动",
+        "investigateMethod": "使用电能质量分析仪监测输入电压波形及波动范围",
+        "repairMethod": "改善供电环境，增加稳压装置或滤波器，重新上电测试",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "散热不良",
+        "entity_type": "故障原因与现象",
+        "description": "散热通道堵塞或灰尘过多导致控制单元过热，可能引发二次故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "更换风扇时需同时检查散热通道，避免因散热不良导致二次故障",
+        "investigateMethod": "目视检查散热风口及内部灰尘堆积情况，测量控制单元温度",
+        "repairMethod": "清理灰尘及杂物，确保风道畅通，确认散热能力符合工作要求",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "风扇寿命到期 & 散热不良",
+        "entity_type": "逻辑与",
+        "description": "风扇寿命到期与散热通道堵塞同时存在，极易导致控制单元过热及二次故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当两者同时存在时，需同时更换风扇并清理散热通道",
+        "investigateMethod": "检查风扇运行时间及散热风口堵塞情况，综合评估散热系统状态",
+        "repairMethod": "更换新风扇，彻底清理散热通道灰尘，复位计数器并测试温度",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::12"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01650",
+        "entity_type": "故障原因与现象",
+        "description": "安全监控通道发现一处故障，故障现象为 SIP1（CU）：必须进行验收测试",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01650 时，检查安全参数及监控通道校验和",
+        "investigateMethod": "读取故障值 r0949（十进制），确认监控通道 1 校验和是否一致",
+        "repairMethod": "重新进行验收测试，校正安全参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::15"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "安全时间片同步失败",
+        "entity_type": "故障原因与现象",
+        "description": "安全功能相关的时间片同步异常，可能由热启动或主站故障引起",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "同步失败时检查主站配置及启动流程",
+        "investigateMethod": "检查 PROFIBUS 配置及同步参数设置",
+        "repairMethod": "修正同步配置，确保主站通信正常",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::15"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01003 存储器访问应答延迟",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元内部存储器访问应答延迟，可能导致数据丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "检查控制单元内部存储器的连接状态及是否损坏",
+        "investigateMethod": "拔出后重新插入存储卡，替换存储卡排查，联系技术支持",
+        "repairMethod": "更换存储卡，进行存储器故障诊断及修复",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::11"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01020 写 RAM 失败",
+        "entity_type": "故障原因与现象",
+        "description": "内部 RAM 写入失败，可能因日志文件占用空间过大",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "调整内部 RAM 上系统日志的文件大小，检查 RAM 芯片",
+        "investigateMethod": "修改 p9930 参数减小日志空间，检查 RAM 芯片连接状态",
+        "repairMethod": "更换控制单元主板，排查接触不良或芯片损坏",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::11"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制单元主板硬件损坏",
+        "entity_type": "故障原因与现象",
+        "description": "主板存在电容鼓包、芯片烧毁等物理损坏，导致故障重复",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "若故障重复出现，需检查控制单元主板是否存在物理损坏",
+        "investigateMethod": "目视检查电容是否鼓包，检查芯片是否有烧毁痕迹",
+        "repairMethod": "更换控制单元主板，避免旧版本固件漏洞",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::11"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障重复出现 & 主板硬件损坏",
+        "entity_type": "逻辑与",
+        "description": "软件故障重复发生且伴随主板物理损坏迹象，导致系统无法恢复",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当软故障反复发生且重启动无效时，怀疑硬件损坏共同作用",
+        "investigateMethod": "结合故障缓冲器记录与主板物理检查，确认损坏情况",
+        "repairMethod": "更换控制单元，同时升级固件以排除软件漏洞",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::11"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "断流阀机械结构卡滞",
+        "entity_type": "故障原因与现象",
+        "description": "断流阀闭合过程出错，可能因机械卡滞引起，对应故障值 30/31",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "故障值为 30、31 时，重点检查机械结构",
+        "investigateMethod": "检查断流阀机械结构是否卡滞",
+        "repairMethod": "清理或更换断流阀",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::18"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01611 (监控通道故障)",
+        "entity_type": "故障原因与现象",
+        "description": "监控通道发生故障，处理逻辑与 F01600 类似，涉及液压模块 STO",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01611 时，结合 r0949 交叉比较数据编号排查",
+        "investigateMethod": "检查液压模块 STO 端子布线及 F-DI 连接，查看 r9772",
+        "repairMethod": "修复布线、升级软件、更换液压模块或重置 STO 应答",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::17"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制定时器届满",
+        "entity_type": "故障原因与现象",
+        "description": "F01600 故障值为 1000 时的具体状态，表示控制定时器超时",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r0949 为 1000 时，重点检查电机模块 EP 端子布线",
+        "investigateMethod": "排查 EP 端子接触问题，检查 TM54F 上 F-DI 连接",
+        "repairMethod": "修复接触问题，必要时提高差异时间 p9650/p9850",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::17"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "STO 状态不一致",
+        "entity_type": "故障原因与现象",
+        "description": "F01611 故障值为 2000~2003 时的状态，表示 STO 信号状态不符",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r0949 为 2000~2003 时，检查 F-DI 连接及 STO 选择原因",
+        "investigateMethod": "查看 r9772 中 STO 选择的原因，检查 F-DI 连接",
+        "repairMethod": "更换液压模块，排除故障后重新选择/撤销 STO 应答",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::17"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数设置不一致",
+        "entity_type": "故障原因与现象",
+        "description": "监控通道参数或并联功率单元配置参数不匹配导致故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "涉及交叉比较或并联单元时，确保所有组件参数一致",
+        "investigateMethod": "检查 p9601、p9602、p7015 等参数设置",
+        "repairMethod": "修改参数确保一致，重新上电或校准",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::17"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F-DI 接线接触不良",
+        "entity_type": "故障原因与现象",
+        "description": "安全数字输入接线松动或接触问题导致信号异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 STO 相关故障时，优先排查 F-DI 物理连接",
+        "investigateMethod": "检查 F-DI 接线是否牢固，排查接触问题",
+        "repairMethod": "重新紧固接线，修复接触不良点",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::17"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01640 组件更换需应答",
+        "entity_type": "故障原因与现象",
+        "description": "组件更换后未进行应答或保存操作引发的故障，需根据组件类型执行应答",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01640 时，根据故障值 r0949 判断更换的组件类型并执行应答",
+        "investigateMethod": "读取故障值 r0949 二进制位，确认更换组件类型",
+        "repairMethod": "执行组件更换应答 p9702=29，保存参数 p0977=1，应答故障",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::19"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01641 组件更换需保存",
+        "entity_type": "故障原因与现象",
+        "description": "组件更换后参数未正确存储，可能导致下次启动时参数丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "处理流程与 F01640 类似，重点执行参数保存操作",
+        "investigateMethod": "检查 r9776 参数确认组件更换后的状态",
+        "repairMethod": "保存参数，必要时重新执行安全功能的简化验收测试",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::19"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01649 安全功能内部软件错误",
+        "entity_type": "故障原因与现象",
+        "description": "安全功能内部发生软件错误，可能由固件漏洞或硬件问题引起",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "需重新为所有组件上电，重复 Safety Integrated 功能调试",
+        "investigateMethod": "重复调试安全功能并执行上电，检查固件版本",
+        "repairMethod": "升级功率单元固件至最新版本，必要时更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::19"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01650 必须进行验收测试",
+        "entity_type": "故障原因与现象",
+        "description": "因参数或硬件更改、校验和不一致等原因触发验收测试要求",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "根据故障值 r0949 判断具体原因并执行对应操作",
+        "investigateMethod": "检查 r0949 故障值（如 130, 1000, 2000 等），核对 p9799/p9899 校验和",
+        "repairMethod": "执行验收测试，删除未禁用安全参数，取消 STO 功能后应答",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::19"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "校验和不一致",
+        "entity_type": "故障原因与现象",
+        "description": "设定校验和与实际校验和不一致，对应 F01650 故障值 1000 或 2000",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01650 且故障值为 1000/2000 时检查校验和参数",
+        "investigateMethod": "检查 p9799、p9899 参数，确保设定校验和与实际校验和一致",
+        "repairMethod": "修正参数使校验和一致，删除未禁用的安全功能参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::19"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01641",
+        "entity_type": "故障原因与现象",
+        "description": "一般驱动故障，故障现象为 SIP1（CU）：识别出组件更换并需保存",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01641 时，检查组件更换标识及故障值 r0949",
+        "investigateMethod": "读取故障值 r0949（二进制），检查新增传感器更换标识",
+        "repairMethod": "保存组件更换信息，重新上电复位",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::15"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01649",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，故障现象为 SI P1（CU)：内部软件错误（安全功能相关）",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01649 时，检查控制单元内部软件状态及安全功能",
+        "investigateMethod": "读取故障值 r0949（十六进制），检查设备内部诊断专用数据",
+        "repairMethod": "升级固件版本，必要时更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::15"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01651",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，故障现象为 SIP1（CU）：安全时间片同步失败",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01651 时，检查同步状态及 PROFIBUS 主站通信",
+        "investigateMethod": "读取故障值 r0949，检查是否因热启动或主站同步故障导致",
+        "repairMethod": "检查通信线路，重新同步或重启系统",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::15"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01651 安全时间片同步失败",
+        "entity_type": "故障原因与现象",
+        "description": "安全时间片同步失败故障，错误码 F01651",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01651 时，需根据故障值 r0949 判断具体原因",
+        "investigateMethod": "读取故障值 r0949",
+        "repairMethod": "根据 r0949 值采取对应措施，如重新上电或调整参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::20"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "故障值 121 热启动导致",
+        "entity_type": "故障原因与现象",
+        "description": "故障值 r0949 为 121，表示热启动导致同步失败",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r0949=121 时，确认为热启动引起",
+        "investigateMethod": "查看故障缓冲器中 r0949 的值",
+        "repairMethod": "重新给上级控制系统和通用型上电",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::20"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "P9510 参数设置错误",
+        "entity_type": "故障原因与现象",
+        "description": "参数 p9510 设置不当可能导致同步故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "针对 PROFIBUS 同步故障，优先检查此参数",
+        "investigateMethod": "读取并核对 p9510 参数值",
+        "repairMethod": "调整同步参数以匹配主站",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::20"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "上级控制系统软件异常",
+        "entity_type": "故障原因与现象",
+        "description": "上级控制系统软件版本可能不匹配或存在缺陷",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "通用处理措施中包含升级上级控制系统软件",
+        "investigateMethod": "检查上级控制系统软件版本",
+        "repairMethod": "升级上级控制系统的软件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::20"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "项目转化出错",
+        "entity_type": "故障原因与现象",
+        "description": "项目转化过程中出现错误，含编码器相关参数",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "转化出错时检查参数兼容性及版本匹配",
+        "investigateMethod": "查看转化日志，定位具体报错参数",
+        "repairMethod": "调整参数设置，使用正确版本软件重新转化项目",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::22"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "风扇损坏",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元风扇无法正常运行，导致散热失效",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "若风扇损坏需及时更换，避免过热",
+        "investigateMethod": "检查控制单元风扇是否运转，听是否有异响",
+        "repairMethod": "更换损坏的控制单元风扇",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "环境温度过高",
+        "entity_type": "故障原因与现象",
+        "description": "电柜环境温度过高，导致控制单元过热",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "避免环境温度过高导致控制单元过热",
+        "investigateMethod": "检查电柜的通风条件及周围热源",
+        "repairMethod": "改善电柜通风条件，降低环境温度",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "散热通道堵塞",
+        "entity_type": "故障原因与现象",
+        "description": "散热通道存在灰尘及杂物，阻碍空气流通",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "需定期清理散热通道的灰尘及杂物",
+        "investigateMethod": "目视检查散热通道是否有灰尘堆积",
+        "repairMethod": "清理散热通道的灰尘及杂物",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "编码器信号精度下降",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元过热进而影响编码器信号的处理精度",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "控制单元过热时需关注编码器信号质量",
+        "investigateMethod": "监测编码器信号波形及处理精度",
+        "repairMethod": "解决控制单元过热问题以恢复信号精度",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "风扇损坏 & 散热通道堵塞",
+        "entity_type": "逻辑与",
+        "description": "风扇损坏与散热通道堵塞同时存在，共同导致控制单元过热",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "同时出现两种情况时，需全面清理并更换风扇",
+        "investigateMethod": "先检查风扇运转，再检查散热通道灰尘情况",
+        "repairMethod": "更换风扇并彻底清理散热通道灰尘及杂物",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参考值更改后参数值计算失败",
+        "entity_type": "故障原因与现象",
+        "description": "F01034 对应的具体故障现象，单位转换过程中参数计算异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当参数值计算失败时，检查参考值变更历史",
+        "investigateMethod": "对比变更前后参数值，检查计算逻辑",
+        "repairMethod": "回滚参数或手动修正计算结果",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参考参数无效",
+        "entity_type": "故障原因与现象",
+        "description": "F01033 对应的具体故障现象，单位转换参考参数值为 0.0",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当参考参数无效时，检查参数赋值过程",
+        "investigateMethod": "查找值为 0.0 的参考参数项",
+        "repairMethod": "赋予参考参数合法的非零值",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "驱动类型不明",
+        "entity_type": "故障原因与现象",
+        "description": "F01010 对应的具体故障现象，系统无法识别驱动对象类型",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "系统无法识别驱动对象类型时，检查配置参数",
+        "investigateMethod": "检查驱动对象配置参数及序号",
+        "repairMethod": "明确指定驱动类型参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数设置配置调试过程出错",
+        "entity_type": "故障原因与现象",
+        "description": "F01034/F01033/F01010 的通用故障类别，PROFIdrive 编号 18",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "此类故障多由人为配置错误引起",
+        "investigateMethod": "检查调试过程中的参数修改记录",
+        "repairMethod": "恢复出厂设置或重新调试",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "信号丢失",
+        "entity_type": "故障原因与现象",
+        "description": "编码器或传感器信号无法正常传输，包括转速、位置信号丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "检查信号线路及接口连接",
+        "investigateMethod": "使用示波器测量信号波形，检查线缆通断",
+        "repairMethod": "修复线路或更换传感器",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参数设置错误",
+        "entity_type": "故障原因与现象",
+        "description": "编码器相关参数配置错误，涉及 p0187-p0189 分配及 p0600 模式",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "信号处理异常时检查 p0187-p0189 等参数",
+        "investigateMethod": "核对参数设置与硬件配置是否一致",
+        "repairMethod": "修正参数设置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "单位转换失败",
+        "entity_type": "故障原因与现象",
+        "description": "电机参数或工艺参数单位转换失败，涉及 p0349、p005、p0595 等",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "检查 p0349、p005 等单位制相关参数",
+        "investigateMethod": "验证单位制选择是否匹配电机数据",
+        "repairMethod": "调整单位制参数设置",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "接口松动",
+        "entity_type": "故障原因与现象",
+        "description": "DRIVE-CLiQ 接口或编码器信号接口物理连接松动",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "信号间歇性错误时检查接口紧固情况",
+        "investigateMethod": "重新插拔接口并检查锁扣",
+        "repairMethod": "重新紧固接口或更换线缆",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "信号干扰",
+        "entity_type": "故障原因与现象",
+        "description": "外部电磁干扰导致编码器信号错误或丢失",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "信号波动大时检查屏蔽接地",
+        "investigateMethod": "检查线缆屏蔽层及接地情况",
+        "repairMethod": "改善布线或增加屏蔽措施",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "编码器信号处理异常",
+        "entity_type": "故障原因与现象",
+        "description": "编码器信号处理异常，由参数设置错误或分配不当导致",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "结合参数设置及硬件状态综合排查",
+        "investigateMethod": "监控信号处理中间变量",
+        "repairMethod": "修正参数或更换信号模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "XXXX=008D 固件文件长度不一致",
+        "entity_type": "故障原因与现象",
+        "description": "固件文件长度校验不匹配，通常由下载过程异常引起",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 008D 错误时，需检查固件文件完整性",
+        "investigateMethod": "检查下载过程中通讯是否中断，验证文件哈希值",
+        "repairMethod": "重新下载完整固件文件，确保通讯稳定",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "XXXX=008F 无法进入下载模式",
+        "entity_type": "故障原因与现象",
+        "description": "设备无法进入固件下载模式，可能因硬件损坏导致",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 008F 错误，需排查编码器模块是否损坏",
+        "investigateMethod": "检查编码器模块状态及接口连接",
+        "repairMethod": "必要时更换编码器模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01006 编码器模块固件需升级",
+        "entity_type": "故障原因与现象",
+        "description": "编码器模块固件版本过低，需执行升级操作",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01006 报警，需通过调试工具或参数执行固件升级",
+        "investigateMethod": "查看配置 - 版本概述，检查 r2124 对应的组件号",
+        "repairMethod": "下载匹配固件，设置 p7829=1 启动下载，完成后重新上电",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01007 编码器模块需重新上电",
+        "entity_type": "故障原因与现象",
+        "description": "编码器模块需要重新上电复位以生效配置或修复状态",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01007 报警，需根据报警值 r2124 对应的组件号重新上电",
+        "investigateMethod": "查看 r2124 确定组件号，若为 1 则重新上电控制单元",
+        "repairMethod": "重新上电对应组件或控制单元，重启自动调试",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01012 项目转化出错",
+        "entity_type": "故障原因与现象",
+        "description": "项目文件转化过程中出现错误，可能涉及参数分配问题",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01012 故障，需重点检查故障值 r0949 对应的参数号",
+        "investigateMethod": "检查 r0949 故障值，若为 600 则检查温度检测分配",
+        "repairMethod": "设置 p0600 及编码器信号分配参数，升级固件至最新版本",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "温度检测分配错误",
+        "entity_type": "故障原因与现象",
+        "description": "内部编码器信号转换和编码器接口的分配情况错误",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "故障值为 600 时，需根据内部编码器信号转换和接口分配情况检查",
+        "investigateMethod": "检查 p0600 设为 1/2/3，通过 p0187-p0189 分配信号",
+        "repairMethod": "将 p0600 设为正确接口号，分配信号给对应编码器接口",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "通讯中断 & 固件文件长度不一致",
+        "entity_type": "逻辑与",
+        "description": "下载过程中通讯中断导致固件文件长度不一致错误",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "同时出现通讯不稳定和 008D 错误时，需重点检查通讯链路",
+        "investigateMethod": "检查通讯线路连接及负载情况，测量通讯波形",
+        "repairMethod": "修复通讯线路，降低通讯负载，重新下载固件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "自动调试受阻 & 编码器模块需重新上电",
+        "entity_type": "逻辑与",
+        "description": "使用数控系统时自动调试受阻，伴随编码器模块需重新上电",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "数控系统自动调试失败且出现 A01007 时，需对所有组件执行上电",
+        "investigateMethod": "检查所有组件上电状态及数控系统配置",
+        "repairMethod": "对所有组件执行上电，重新启动自动调试",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01033 单位转换参考参数无效",
+        "entity_type": "故障原因与现象",
+        "description": "单位转换过程中参考参数无效，故障值 r0949 对应参数取值可能为 0.0",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01033 时，需检查故障值 r0949 对应的参考参数",
+        "investigateMethod": "检查 p0304、p0305、p0310 等参数是否为零，检查单位制参数",
+        "repairMethod": "调整参数值不为 0.0，确保单位制配置一致",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01034 单位转换参数计算失败",
+        "entity_type": "故障原因与现象",
+        "description": "单位转换中参考值更改后参数值计算失败，无法按百分比重新计算",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01034 时，检查 r0949 对应参数及参考参数更改情况",
+        "investigateMethod": "检查参考参数与目标参数的匹配性及取值范围",
+        "repairMethod": "恢复参数初始值或调整参考参数至合理范围，重新计算",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01010 驱动类型不明",
+        "entity_type": "故障原因与现象",
+        "description": "系统无法识别驱动类型，可能涉及电机模块及编码器配置问题",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01010 时，根据故障值 r0949 检查驱动对象序号",
+        "investigateMethod": "检查 p0101、p0107，检查电机模块及编码器配置",
+        "repairMethod": "更换损坏功率模块，升级固件，重新上电或联系技术支持",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01005 编码器模块固件下载失败",
+        "entity_type": "故障原因与现象",
+        "description": "编码器模块固件下载失败，包含校验和、兼容性、通讯等多种子原因",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01005 时，根据故障值 r0949 的 xxxx 部分采取对应措施",
+        "investigateMethod": "检查固件文件完整性、版本、硬件兼容性及 DRIVE-CLiQ 布线",
+        "repairMethod": "重新获取固件、更换模块、检查布线或重新上电下载",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "固件校验和错误",
+        "entity_type": "故障原因与现象",
+        "description": "固件文件校验和错误（xXXx=000B），导致无法载入固件",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 F01005 故障值特定部分为 000B 时",
+        "investigateMethod": "检查固件文件是否完整",
+        "repairMethod": "重新获取固件文件，确保文件完整",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "功率模块损坏",
+        "entity_type": "故障原因与现象",
+        "description": "功率模块硬件损坏，可能导致驱动类型不明等故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当排查 F01010 故障且配置无误时，怀疑功率模块损坏",
+        "investigateMethod": "检查功率模块硬件状态及指示灯",
+        "repairMethod": "更换损坏的功率模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "参考参数无效 & 单位制配置不一致",
+        "entity_type": "逻辑与",
+        "description": "参考参数无效与单位制配置不一致共同导致单位转换冲突",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当出现 F01033 且单一参数调整无效时，需同时检查两者",
+        "investigateMethod": "同时检查参考参数值及 p0349 等单位制参数配置",
+        "repairMethod": "调整参数值并确保单位制配置一致，避免冲突",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::24"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01013",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为一般驱动故障，现象为达到或超过风扇使用寿命",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01013 时，检查参数 r2124 确认风扇寿命状态",
+        "investigateMethod": "读取 r2124 值，0 表示 500 小时后，1 表示超过 50000 小时",
+        "repairMethod": "更换控制单元风扇或整体更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01016",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，关联硬件固件，现象为固件被修改",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01016 时，检查固件文件完整性及版本",
+        "investigateMethod": "校验文件 checksum，对比固件版本信息",
+        "repairMethod": "重新下载固件或恢复备份文件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "A01017",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为硬件/软件故障，现象为组件列表被更改",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 A01017 时，检查组件配置及连接状态",
+        "investigateMethod": "读取信息值 r2124，确认问题类型、目录及文件名",
+        "repairMethod": "恢复默认组件配置或重新识别组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "PROFISAFE 通讯故障",
+        "entity_type": "故障原因与现象",
+        "description": "PROFIsafe 协议用于安全功能的通讯，发生通讯故障会触发安全停止",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当触发安全停止时，优先检查 PROFIsafe 通讯状态",
+        "investigateMethod": "使用诊断工具查看 PROFIsafe 通讯报文及错误计数",
+        "repairMethod": "检查通讯线缆，重置通讯模块",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::5"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "PROFISAFE 控制故障",
+        "entity_type": "故障原因与现象",
+        "description": "F01600 故障值为 6000~6999 时的状态，涉及安全通讯异常",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当 r0949 在 6000~6999 范围，检查 PROFIsafe 参数配置",
+        "investigateMethod": "检查目标/源地址、看门狗时间，校验 PROFIBUS/PROFINET 连接及 CRC 值",
+        "repairMethod": "修正参数配置，重新加载 F 参数并校验",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::17"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "PROFINET 通道异常",
+        "entity_type": "故障原因与现象",
+        "description": "PROFINET 通道诊断发现的异常，通过 Channel ErorType 标识，对应十六进制故障编码 9000~9013",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 9000~9013 十六进制值时，确认为 PROFINET 通道异常",
+        "investigateMethod": "读取 Channel ErorType，查看 GSDML 文件显示的故障文本",
+        "repairMethod": "检查 PROFINET 网线连接，重新加载 GSDML 文件，复位通道",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::4"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "内部软件错误",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元内部软件运行发生错误或异常，导致 F01015 故障，并伴随 r9999 附加信息报错。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01015 故障时判定为内部软件错误，需查看 r9999 详细信息以定位具体原因。",
+        "investigateMethod": "分析软件日志及故障值，读取 r9999 参数值并分析错误代码，检查 RAM 芯片状态。",
+        "repairMethod": "尝试复位系统或升级固件，若无效则更换控制单元硬件，或联系技术支持。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10",
+            "test_v1::7"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "组件连接损坏",
+        "entity_type": "故障原因与现象",
+        "description": "功率单元、电机模块、液压模块等组件的物理连接断开或硬件损坏",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "系统报错时，检查各模块间物理连线及组件完整性",
+        "investigateMethod": "目视检查线缆破损，万用表测量通断，检查组件外观",
+        "repairMethod": "修复或更换损坏的连接线缆及受损组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::16"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "组件损坏",
+        "entity_type": "故障原因与现象",
+        "description": "编码器模块、传感器、信号转换模块等组件物理损坏触发对应故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当信号丢失且连接正常时，怀疑组件损坏",
+        "investigateMethod": "目视检查组件外观，测量电气特性",
+        "repairMethod": "更换损坏的组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制单元 (CU)",
+        "entity_type": "故障原因与现象",
+        "description": "故障组件定位为控制单元（CU），涉及硬件及软件异常，可能关联多个故障代码，传播方式为 LOCAL 或 GLOBAL。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当故障定位到 CU 本地或多个故障指向 CU 时，需优先重点检查 CU 模块本身的状态及连接。",
+        "investigateMethod": "检查 CU 模块连接线缆、供电电压、通信接口状态、CU 指示灯及 DRIVE-CLiQ 连接状态。",
+        "repairMethod": "重新插拔 CU 模块，清洁接口，检查供电电压，重置控制单元，或更换故障组件。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::15",
+            "test_v1::9"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "安全监控通道故障",
+        "entity_type": "故障原因与现象",
+        "description": "PROFIdrive 编号 10 的通用故障类别，涉及控制单元及各模块的安全监控通道异常（发现一处故障），传播方式为 GLOBAL",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "涉及安全功能的故障需优先处理，确保系统安全状态；当出现此类故障类别时，需排查所有关联的安全监控通道及 PROFIsafe 配置",
+        "investigateMethod": "检查 PROFIsafe 配置及交叉比较数据，确认故障反应及应答方式；检查安全相关组件（如制动、断流阀）的通信及状态",
+        "repairMethod": "修正安全配置，排除安全通道干扰；更换故障监控通道组件或安全相关硬件，或更新固件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::14",
+            "test_v1::13"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "制动绕组短路",
+        "entity_type": "故障原因与现象",
+        "description": "F01630 故障值 r0949 为 20 时表示制动绕组发生短路故障，导致制动控制出错",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当出现 F01630 故障且 r0949 故障值为 20 时，直接判定为制动绕组短路",
+        "investigateMethod": "使用万用表测量制动绕组的绝缘电阻及直流阻值",
+        "repairMethod": "更换短路的制动绕组，或整体更换电机组件（电机模块）",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::14",
+            "test_v1::18"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01000",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，组件为控制单元，故障反应 OFF2，应答方式为上电",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01000 时，检查信息值中的模块和行号",
+        "investigateMethod": "读取故障值 r0949，分析信息值格式“模块：%1，行：%2”",
+        "repairMethod": "重新上电，若故障持续则更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::7"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01003",
+        "entity_type": "故障原因与现象",
+        "description": "硬件/软件故障，组件为控制单元，故障现象为访问存储器时出现应答延迟",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01003 时，重点检查存储器访问性能",
+        "investigateMethod": "读取 r0949 故障值，监控存储器响应时间",
+        "repairMethod": "重新上电，若频繁出现则更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::7"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01020",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为硬件/软件故障，现象为写 RAM 失败",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01020 时，重点检查控制单元存储器状态",
+        "investigateMethod": "读取故障缓冲器，检查 RAM 读写功能",
+        "repairMethod": "重新上电，若无效则更换控制单元",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::8"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01009",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元过热故障代码，标识为 N 类故障",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01009 时优先检查控制单元散热系统",
+        "investigateMethod": "检查控制单元送风情况、风扇运行状态及电柜通风条件",
+        "repairMethod": "清理散热通道，更换损坏风扇，改善环境温度",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01010",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为参数设置出错，现象为驱动类型不明",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01010 时，检查驱动对象序号及 p0101、p0107 参数",
+        "investigateMethod": "读取故障值 r0949 确认驱动对象序号",
+        "repairMethod": "正确配置驱动类型参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01005",
+        "entity_type": "故障原因与现象",
+        "description": "故障代码，类别为硬件/软件故障，现象为下载 DRIVE-CLiQ 组件固件失败",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01005 时，检查组件号及故障原因代码",
+        "investigateMethod": "解析 r0949 故障值 (yyxxxx)，确认组件编号及原因",
+        "repairMethod": "重新下载固件或更换 DRIVE-CLiQ 组件",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::21"
+        ],
+        "support_count": 1,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制单元过热",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元（CU）温度过高或超过极限值，可能导致编码器信号处理精度受影响",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "温度过高时检查柜内温度及冷却系统；温度低于极限值后方可恢复正常运行",
+        "investigateMethod": "测量或监测控制单元（CU）温度状态，检查风扇状态及散热通道是否堵塞",
+        "repairMethod": "清理灰尘杂物，确保风扇正常运行或更换故障风扇，增加散热设备，降低环境温度",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::26",
+            "test_v1::22"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01632 断流阀控制/反馈出错",
+        "entity_type": "故障原因与现象",
+        "description": "安全监控通道发现故障，驱动对象为 HLA，现象为 SIP1(CU) 断流阀控制或反馈信号异常，涉及接线及机械结构问题，系统反应为 OFF2。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01632 故障时，重点检查液压模块及断流阀状态，包括接口 X272/X281/X282 及机械结构。",
+        "investigateMethod": "检查断流阀反馈信号线路、接线及 EMC 敷设是否正常，确认液压管路压力及机械结构是否存在卡滞。",
+        "repairMethod": "调整断流阀位置或参数，修复反馈线路及接线，必要时更换断流阀或液压模块。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::14",
+            "test_v1::18"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "DRIVE-CLIQ 通讯故障",
+        "entity_type": "故障原因与现象",
+        "description": "控制单元与电机模块等组件间内部通讯异常（对应 F01630 故障值 50），导致数据传输中断或同步故障，触发内部通讯故障代码，通用处理中需检查 DRIVE-CLiQ 通讯状态。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "组件间数据传输中断或出现同步故障时触发内部通讯故障代码；当故障值为 50（如 F01630）时，需排查 DRIVE-CLiQ 通讯链路。",
+        "investigateMethod": "检查 DRIVE-CLiQ 线缆连接及通讯线路状态；确认组件属性及固件版本兼容性；验证 DRIVE-CLiQ 通讯是否正常。",
+        "repairMethod": "重新插拔或修复 DRIVE-CLiQ 通讯线路；升级组件固件至兼容版本；若故障仍存在，更换损坏组件（如电机模块）。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 43
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::20",
+            "test_v1::18",
+            "test_v1::4"
+        ],
+        "support_count": 3,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "功率单元及电机模块硬件故障",
+        "entity_type": "故障原因与现象",
+        "description": "涉及功率单元及电机模块（MM）的硬件异常数据类别，属于系统级硬件故障，包含多种故障代码及基础信息，涵盖因组件损坏或配置问题导致的故障。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统出现相关硬件故障报警或故障码时，参考本章数据及章节指引（如章节 2.2）进行排查，优先查阅此类别下的故障代码列表以定位具体故障，并检查功率单元及电机模块的物理连接及状态。",
+        "investigateMethod": "1. 检查硬件状态指示灯及读取故障缓冲器数据；2. 查阅故障代码列表及基础信息，核对故障代码定义；3. 检查功率单元及电机模块的接线、硬件完整性及硬件版本。",
+        "repairMethod": "根据具体故障代码执行相应措施：1. 重新上电；2. 修复硬件连接或布线；3. 重新配置组件参数、参数校正或升级固件；4. 更换损坏的硬件模块。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 147
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::20",
+            "test_v1::16",
+            "test_v1::18",
+            "test_v1::19",
+            "test_v1::14",
+            "test_v1::15",
+            "test_v1::17",
+            "test_v1::13"
+        ],
+        "support_count": 8,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "功率单元硬件故障",
+        "entity_type": "故障原因与现象",
+        "description": "底事件之一，涵盖功率单元（PM/MM）相关的硬件异常，包括模块损坏、过热、过流、过载及功率电子元器件损坏，可能引发驱动系统停机或输出异常。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当系统停机或涉及功率输出异常时，优先检查功率单元硬件状态，重点检查功率模块及散热系统。",
+        "investigateMethod": "测量直流母线电压及输入输出电压电流，检查 IGBT 模块状态、元器件温度、温度传感器及物理损坏情况。",
+        "repairMethod": "更换损坏的功率电子元器件或功率单元模块，清理散热器、更换风扇或改善散热条件。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 61
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 5
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::6",
+            "test_v1::0"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "F01630 制动控制出错",
+        "entity_type": "故障原因与现象",
+        "description": "安全监控通道发现故障（F01630），驱动对象为 SERVO，现象为 SIP1(CU) 制动控制出错，反应 OFF2。制动控制过程出现错误，需根据故障值 r0949 判断具体场景。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现 F01630 时，读取故障值 r0949 以确定具体制动错误类型或定位具体原因。",
+        "investigateMethod": "读取故障值 r0949；检查参数 p1278 设置；测量制动绕组电阻及接地情况；检查抱闸连接、电缆及制动控制线路连接；检查通讯状态。",
+        "repairMethod": "调整或修改制动参数；修复制动线路及连接；更换短路的制动绕组或电机模块。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 121
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::14",
+            "test_v1::18"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "控制单元硬件故障",
+        "entity_type": "故障原因与现象",
+        "description": "本类别为章节标题定义的故障类别及底事件之一，涵盖控制单元（CU）相关的硬件异常数据及故障集合。具体涉及内部软件错误、存储器访问延迟或问题、DRIVE-CLiQ 组件属性变化、主板、风扇等组件损坏、软件超时、固件及存储等问题。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "当出现控制单元（CU）相关故障代码或硬件相关故障码时，优先归类为此类别进行排查。重点检查控制单元硬件状态、固件版本、电源供应及故障缓冲器。",
+        "investigateMethod": "1. 读取故障缓冲器（如 r0945、r0949 等）及具体报警代码，检查日志；2. 检查控制单元状态指示灯及主板状态；3. 检查硬件连接、通信连接及电源供应情况；4. 确认固件版本及状态。",
+        "repairMethod": "1. 重新上电或重启控制单元；2. 升级固件或重新烧录固件；3. 检查电源供电稳定性及修复硬件连接；4. 必要时更换控制单元、损坏组件或硬件模块；5. 根据具体故障代码执行对应的处理细则。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 67
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 61
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 91
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 99
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::10",
+            "test_v1::12",
+            "test_v1::8",
+            "test_v1::9",
+            "test_v1::6",
+            "test_v1::11",
+            "test_v1::7"
+        ],
+        "support_count": 7,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "编码器及传感器故障",
+        "entity_type": "故障原因与现象",
+        "description": "该实体为章节标题定义的故障类别及底事件之一，涉及编码器及传感器组件的硬件异常数据。涵盖反馈系统及传感器硬件异常（如信号丢失、干扰）、模块损坏、固件问题等，包含通道 1-3 及 DRIVE-CLiQ 接口故障及相关故障处理细则。",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "出现位置偏差、反馈丢失或相关硬件故障代码时，优先检查编码器及传感器硬件连接及组件状态，并参考章节 2.3 相关故障数据进行处理。",
+        "investigateMethod": "检查编码器线缆屏蔽、传感器信号线、硬件接口及接线情况；测量信号质量及通信波形，检查 DRIVE-CLiQ 通信；检查组件物理状态、硬件状态指示灯及组件属性；读取故障缓冲器。",
+        "repairMethod": "更换损坏的编码器、传感器或硬件组件；修复连接线路，重新布线或增加屏蔽；重新连接组件，重新初始化组件或重新配置参数。",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 61
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 181
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 209
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::25",
+            "test_v1::24",
+            "test_v1::23",
+            "test_v1::22",
+            "test_v1::6",
+            "test_v1::21",
+            "test_v1::26"
+        ],
+        "support_count": 7,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    },
+    {
+        "name": "固件版本不匹配",
+        "entity_type": "故障原因与现象",
+        "description": "电机模块或液压模块组件的固件版本与控制单元不匹配，涉及 p7828 固件下载组件号",
+        "errorLevel": "中",
+        "priority": 1,
+        "probability": null,
+        "showProbability": null,
+        "rule": "更换电机模块/液压模块时，或故障伴随通信错误时，需检查组件的固件版本",
+        "investigateMethod": "读取组件固件版本号，并与控制单元要求版本进行对比",
+        "repairMethod": "下载并更新正确版本的固件以确保与控制单元匹配，完成后重新加载配置参数",
+        "documents": [
+            {
+                "document_name": "test_cleaned",
+                "source": 155
+            },
+            {
+                "document_name": "test_cleaned",
+                "source": 199
+            }
+        ],
+        "source_chunk_ids": [
+            "test_v1::23",
+            "test_v1::19"
+        ],
+        "support_count": 2,
+        "file_ids": [
+            "test"
+        ],
+        "file_version_ids": [
+            "test_v1"
+        ],
+        "is_active": true
+    }
+]

@@ -125,7 +125,6 @@ def build_entity_props(entity: Dict) -> Dict:
         props["source_chunk_ids"] = entity["source_chunk_ids"]
     if "support_count" in entity:
         props["support_count"] = entity["support_count"]
-    # 版本化知识库：合并实体 JSON 中应携带 file_id / file_version_id，供 Neo4j 写入与按版本过滤
     for k in ("file_id", "file_version_id"):
         v = entity.get(k)
         if v not in (None, ""):
@@ -140,7 +139,8 @@ def save_relations_to_csv_second(relations: List[Dict], output_csv_path: str) ->
     fieldnames = set()
     for rel in relations:
         fieldnames.update(rel.keys())
-    preferred_order = ["chunk_id", "entity1", "entity2", "relation_type", "entity1_type", "entity2_type"]
+    # 将 chunk_uid 放在前面
+    preferred_order = ["chunk_uid", "entity1", "entity2", "relation_type", "entity1_type", "entity2_type"]
     fieldnames = [f for f in preferred_order if f in fieldnames] + [f for f in fieldnames if f not in preferred_order]
     with open(output_csv_path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -150,13 +150,12 @@ def save_relations_to_csv_second(relations: List[Dict], output_csv_path: str) ->
             writer.writerow(row)
     print(f"已保存 {len(relations)} 条关系到 {output_csv_path}")
 
-def load_processed_chunk_ids(output_file: str) -> Set[str]:
+def load_processed_chunk_uids(output_file: str) -> Set[str]:
     if not os.path.exists(output_file):
         return set()
     with open(output_file, "r", encoding="utf-8") as f:
         data = [json.loads(line.strip()) for line in f]
-    # 统一转为字符串
-    return {str(item["chunk_id"]) for item in data}
+    return {str(item.get("chunk_uid", "")) for item in data if item.get("chunk_uid")}
 
 def call_llm_with_retry(prompt: str, context: str, mode: str, max_retries: int = 3) -> str:
     """带重试机制的 LLM 调用"""
@@ -182,25 +181,23 @@ def call_llm_with_retry(prompt: str, context: str, mode: str, max_retries: int =
 def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dict], output_file: str,
                                   print_raw_text: bool = False, max_workers: int = 10,
                                   max_retries: int = 3) -> List[Dict]:
-    processed_chunk_ids = load_processed_chunk_ids(output_file)
+    processed_chunk_uids = load_processed_chunk_uids(output_file)
     results = []
     if os.path.exists(output_file):
         with open(output_file, "r", encoding="utf-8") as f:
             results = [json.loads(line.strip()) for line in f]
 
-    chunk_entities_map = {res["chunk_id"]: res["entities"] for res in entities_results}
+    chunk_entities_map = {res["chunk_uid"]: res["entities"] for res in entities_results}
 
     pending_chunks = []
     for chunk in chunks:
-        chunk_id_val = chunk.get("chunk_id")
-        if chunk_id_val is None:
-            chunk_id_val = chunk.get("id")
-        if chunk_id_val is None:
-            chunk_id_val = ""
-        chunk_id = str(chunk_id_val)
-        if not chunk_id or chunk_id in processed_chunk_ids:
+        chunk_uid = chunk.get("chunk_uid")
+        if not chunk_uid:
+            print(f"警告：chunk 缺少 chunk_uid 字段，跳过该 chunk: {chunk}")
             continue
-        pending_chunks.append((chunk_id, chunk))
+        if chunk_uid in processed_chunk_uids:
+            continue
+        pending_chunks.append((chunk_uid, chunk))
 
     if not pending_chunks:
         print("没有需要处理的新 chunk")
@@ -208,17 +205,15 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
 
     print(f"需要处理 {len(pending_chunks)} 个 chunk，使用多线程并发调用 LLM，并发数: {max_workers}，重试次数: {max_retries}")
 
-    def process_one(chunk_id: str, chunk: Dict):
+    def process_one(chunk_uid: str, chunk: Dict):
         chunk_name = chunk.get("chunk_name") or "未知文档"
         content = chunk.get("content", "")
         
-        # 提取 chunk 元数据（用于输出）
         file_id = chunk.get("file_id", "")
         file_version_id = chunk.get("file_version_id", "")
         is_active = chunk.get("is_active", True)
-        file_name = chunk.get("file", "")  # 原始文件名
+        file_name = chunk.get("file", "")
         
-        # 拼接章节信息
         title_parts = []
         if chunk.get("section_path"):
             title_parts.append(f"章节路径: {chunk['section_path']}")
@@ -235,7 +230,7 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
         else:
             enriched_content = content
         
-        entities = chunk_entities_map.get(chunk_id, [])
+        entities = chunk_entities_map.get(chunk_uid, [])
         
         original_entity_map = {}
         normalized_entity_map = {}
@@ -247,7 +242,7 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
                 if norm_name not in normalized_entity_map:
                     normalized_entity_map[norm_name] = ent
         
-        print(f"处理文档关系：{chunk_name}，chunk_id: {chunk_id}，实体数: {len(entities)}")
+        print(f"处理文档关系：{chunk_name}，chunk_uid: {chunk_uid}，实体数: {len(entities)}")
         valid_relations = []
         try:
             if entities:
@@ -257,11 +252,11 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
                 relation_text = call_llm_with_retry(relation_prompt, relation_context, mode="relation", max_retries=max_retries)
 
                 if not relation_text:
-                    print(f"警告：chunk {chunk_id} LLM 调用最终失败，跳过该 chunk")
+                    print(f"警告：chunk {chunk_uid} LLM 调用最终失败，跳过该 chunk")
                     return None
 
                 if print_raw_text:
-                    print(f"\n=== LLM 原始返回 (chunk_id: {chunk_id}) ===\n{relation_text}\n=================================\n")
+                    print(f"\n=== LLM 原始返回 (chunk_uid: {chunk_uid}) ===\n{relation_text}\n=================================\n")
 
                 relations = parse_relations_second(relation_text)
                 for rel in relations:
@@ -279,22 +274,18 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
                             elif relation_type == "修复":
                                 ent2.setdefault("repair_methods", []).append(ent1.get("name") or ent1.get("entity_name"))
                         else:
-                            # 构建实体属性，并补充元数据、转换 documents 格式
                             props1 = build_entity_props(ent1)
                             props2 = build_entity_props(ent2)
                             
-                            # 添加 chunk 元数据到 props
                             for props in (props1, props2):
                                 props["file_id"] = file_id
                                 props["file_version_id"] = file_version_id
                                 props["is_active"] = is_active
-                                # 转换 documents 格式：使用 source_chunk_ids 生成 [{"chunk_id": ...}]
                                 source_ids = props.get("source_chunk_ids", [])
                                 if source_ids:
-                                    props["documents"] = [{"chunk_id": cid} for cid in source_ids]
+                                    props["documents"] = [{"chunk_uid": cid} for cid in source_ids]
                                 else:
                                     props["documents"] = []
-                                # 确保 normalized_name 经过标准化
                                 raw_name = props.get("name", "")
                                 props["normalized_name"] = normalize_entity_name(raw_name)
                             
@@ -303,8 +294,8 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
                             rel["entity1_props"] = props1
                             rel["entity2_props"] = props2
                             
-                            # 为每个关系添加 chunk 元数据
-                            rel["chunk_id"] = chunk_id
+                            # 使用 chunk_uid 作为标识
+                            rel["chunk_uid"] = chunk_uid
                             rel["file_id"] = file_id
                             rel["file_version_id"] = file_version_id
                             rel["file_name"] = file_name
@@ -316,25 +307,25 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
                             print(f"关系实体未匹配: {rel['entity1']} -> {norm_e1}, {rel['entity2']} -> {norm_e2}")
 
             result = {
-                "chunk_id": chunk_id,
+                "chunk_uid": chunk_uid,
                 "file_id": file_id,
                 "file_version_id": file_version_id,
                 "file_name": file_name,
                 "is_active": is_active,
                 "relations": valid_relations,
             }
-            print(f"chunk {chunk_id} 提取有效关系数：{len(valid_relations)}")
+            print(f"chunk {chunk_uid} 提取有效关系数：{len(valid_relations)}")
             return result
         except Exception as e:
-            print(f"处理 chunk_id {chunk_id} 关系时出错: {e}")
+            print(f"处理 chunk_uid {chunk_uid} 关系时出错: {e}")
             return None
 
     new_results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-        future_to_chunk = {executor.submit(process_one, cid, chunk): cid for cid, chunk in pending_chunks}
+        future_to_chunk = {executor.submit(process_one, cuid, chunk): cuid for cuid, chunk in pending_chunks}
         with open(output_file, "a", encoding="utf-8") as f:
             for future in concurrent.futures.as_completed(future_to_chunk):
-                cid = future_to_chunk[future]
+                cuid = future_to_chunk[future]
                 try:
                     result = future.result()
                     if result is not None:
@@ -342,7 +333,7 @@ def extract_relations_incremental(chunks: List[Dict], entities_results: List[Dic
                         f.flush()
                         new_results.append(result)
                 except Exception as e:
-                    print(f"处理 chunk {cid} 时发生异常: {e}")
+                    print(f"处理 chunk {cuid} 时发生异常: {e}")
 
     results.extend(new_results)
     return results
@@ -352,9 +343,23 @@ def load_chunks(file_path: str) -> List[Dict]:
         first_char = f.read(1)
         f.seek(0)
         if first_char == '[':
-            return json.load(f)
+            data = json.load(f)
         else:
-            return [json.loads(line.strip()) for line in f if line.strip()]
+            data = [json.loads(line.strip()) for line in f if line.strip()]
+    # 确保每个 chunk 都有 chunk_uid，若没有则尝试使用 id 或 chunk_id 生成警告
+    for chunk in data:
+        if "chunk_uid" not in chunk:
+            # 兼容旧数据：尝试使用 id 或 chunk_id，但推荐使用 chunk_uid
+            if "id" in chunk:
+                chunk["chunk_uid"] = str(chunk["id"])
+                print(f"警告：chunk 缺少 chunk_uid，使用 id 字段替代: {chunk['id']}")
+            elif "chunk_id" in chunk:
+                chunk["chunk_uid"] = str(chunk["chunk_id"])
+                print(f"警告：chunk 缺少 chunk_uid，使用 chunk_id 字段替代: {chunk['chunk_id']}")
+            else:
+                print(f"错误：chunk 缺少 chunk_uid、id 和 chunk_id，无法处理: {chunk}")
+                continue
+    return data
 
 def load_aggregated_entities(file_path: str) -> List[Dict]:
     with open(file_path, "r", encoding="utf-8") as f:
@@ -377,10 +382,11 @@ def load_aggregated_entities(file_path: str) -> List[Dict]:
             continue
         for cid in chunk_ids:
             chunk_to_entities[str(cid)].append(ent)
-    return [{"chunk_id": cid, "entities": ents} for cid, ents in chunk_to_entities.items()]
+    # 返回结构中的键改为 chunk_uid
+    return [{"chunk_uid": cuid, "entities": ents} for cuid, ents in chunk_to_entities.items()]
 
 def main():
-    parser = argparse.ArgumentParser(description='实体关系提取工具')
+    parser = argparse.ArgumentParser(description='实体关系提取工具 (基于 chunk_uid)')
     parser.add_argument('--input-chunks', '-ic', required=True, help='输入chunks JSON文件路径')
     parser.add_argument('--input-entities', '-ie', required=True, help='输入实体JSON文件路径（必须提供）')
     parser.add_argument('--output-relations', '-or', required=True, help='输出关系JSON文件路径')
@@ -430,7 +436,6 @@ def main():
     all_relations = []
     for result in relations_results:
         for rel in result.get("relations", []):
-            # 确保每个关系已有 chunk_id 等字段（已在 process_one 中添加）
             all_relations.append(rel)
     save_relations_to_csv_second(all_relations, args.output_csv)
     print(f"CSV转换完成，共 {len(all_relations)} 个关系")

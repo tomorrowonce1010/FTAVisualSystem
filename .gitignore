@@ -31,5 +31,7 @@ Thumbs.db
 
 # test_files
 *.pdf
+*.csv
+*.xlsx
 
 uploads/

@@ -46,6 +46,7 @@ def split_text_by_tables(text):
     """
     将文本分割为普通段落和表格段落（包括 Markdown 表格和 HTML 表格）。
     返回列表，每个元素为 (segment_text, is_table)
+    表格段落作为一个整体，不会被进一步切分。
     """
     lines = text.splitlines()
     segments = []
@@ -53,12 +54,15 @@ def split_text_by_tables(text):
     n = len(lines)
 
     def is_md_table_start(idx):
+        """判断是否为 Markdown 表格的开始行（包含表头和分隔行）"""
         if idx >= n - 1:
             return False
         line = lines[idx].strip()
         next_line = lines[idx + 1].strip()
+        # 当前行必须包含 '|' 且不是纯分隔线
         if '|' not in line or re.fullmatch(r'[\s|:-]+', line):
             return False
+        # 下一行必须是分隔线（如 |---|---|）
         if re.fullmatch(r'[\s|:-]+', next_line) and '|' in next_line:
             cells = [c.strip() for c in next_line.strip('|').split('|')]
             if any(re.fullmatch(r':?-{3,}:?', c) for c in cells if c):
@@ -66,42 +70,57 @@ def split_text_by_tables(text):
         return False
 
     def is_html_table_start(idx):
-        return '<table' in lines[idx].lower()
+        """判断是否为 HTML 表格的开始行（<table 标签）"""
+        # 允许 <table 带属性，大小写不敏感
+        return re.search(r'<\s*table', lines[idx], re.IGNORECASE) is not None
 
-    def collect_table(start_idx, table_type):
+    def collect_md_table(start_idx):
+        """收集完整的 Markdown 表格（从 start_idx 开始，直到连续非表格行）"""
         end_idx = start_idx
-        if table_type == 'md':
-            while end_idx < n:
-                line = lines[end_idx].strip()
-                if not line:
-                    break
-                if '|' not in line and not re.fullmatch(r'[\s|:-]+', line):
-                    break
-                end_idx += 1
-        else:  # html
-            depth = 1
-            end_idx = start_idx + 1
-            while end_idx < n and depth > 0:
-                if '<table' in lines[end_idx].lower():
-                    depth += 1
-                if '<tr>' in lines[end_idx].lower():
-                    depth -= 1
-                end_idx += 1
+        while end_idx < n:
+            line = lines[end_idx].strip()
+            # 空行或完全不包含 '|' 且不是纯分隔线的行，视为表格结束
+            if not line:
+                break
+            if '|' not in line and not re.fullmatch(r'[\s|:-]+', line):
+                break
+            end_idx += 1
+        # 去掉末尾可能的多余空行
+        while end_idx > start_idx and not lines[end_idx-1].strip():
+            end_idx -= 1
+        table_text = '\n'.join(lines[start_idx:end_idx])
+        return end_idx, table_text
+
+    def collect_html_table(start_idx):
+        """收集完整的 HTML 表格（支持嵌套，使用栈计数）"""
+        depth = 1
+        end_idx = start_idx + 1
+        # 找到对应的 </table>，注意大小写和属性
+        while end_idx < n and depth > 0:
+            line_lower = lines[end_idx].lower()
+            # 开始标签 <table
+            if re.search(r'<\s*table', line_lower):
+                depth += 1
+            # 结束标签 </table>
+            if re.search(r'<\s*/\s*table\s*>', line_lower):
+                depth -= 1
+            end_idx += 1
         table_text = '\n'.join(lines[start_idx:end_idx])
         return end_idx, table_text
 
     while i < n:
-        line = lines[i].strip()
+        line_stripped = lines[i].strip()
         if is_md_table_start(i):
-            end, table_text = collect_table(i, 'md')
+            end, table_text = collect_md_table(i)
             segments.append((table_text, True))
             i = end
         elif is_html_table_start(i):
-            end, table_text = collect_table(i, 'html')
+            end, table_text = collect_html_table(i)
             segments.append((table_text, True))
             i = end
         else:
             start = i
+            # 普通段落：累积直到遇到表格开始行
             while i < n and not is_md_table_start(i) and not is_html_table_start(i):
                 i += 1
             para_text = '\n'.join(lines[start:i])
@@ -131,51 +150,52 @@ def parse_markdown_hierarchy(content, chunk_size, doc_name, source_file, file_id
                 title_text = stripped.strip()
                 titles.append((start_pos, end_pos, level, title_text))
 
+    # 如果没有标题，整个文档作为一块处理（仍支持表格保护）
     if not titles:
         all_chunks = []
         block_content = content
-        if len(block_content) <= chunk_size:
-            line_no = get_line_number(0, line_starts)
-            chunk_obj = {
-                "id": "0",
-                "chunk_name": doc_name,
-                "content": block_content,
-                "chapter": "",
-                "section": "",
-                "subsection": "",
-                "section_path": "0.0.0",
-                "source": line_no,
-                "file": source_file,
-                "chunk_id": "0",
-                "file_id": file_id,
-                "file_version_id": file_version_id,
-                "is_active": True,
-                "chunk_uid": f"{file_version_id}::0"
-            }
-            img_paths = extract_image_paths(block_content)
-            if img_paths:
-                chunk_obj["image_paths"] = img_paths
-            if block_content.strip():
+        # 对整个文档进行表格分割
+        segments = split_text_by_tables(block_content)
+        chunk_id = 0
+        for seg_text, is_table in segments:
+            if not seg_text.strip():
+                continue
+            # 表格段落：不切分；普通段落：若超长则切分
+            if is_table:
+                chunk_obj = {
+                    "id": str(chunk_id),
+                    "chunk_name": doc_name,
+                    "content": seg_text,
+                    "chapter": "",
+                    "section": "",
+                    "subsection": "",
+                    "section_path": "0.0.0",
+                    "source": get_line_number(0, line_starts),
+                    "file": source_file,
+                    "chunk_id": str(chunk_id),
+                    "file_id": file_id,
+                    "file_version_id": file_version_id,
+                    "is_active": True,
+                    "chunk_uid": f"{file_version_id}::{chunk_id}",
+                    "table": True          # 标记为表格块
+                }
+                img_paths = extract_image_paths(seg_text)
+                if img_paths:
+                    chunk_obj["image_paths"] = img_paths
                 all_chunks.append(chunk_obj)
-        else:
-            lines = block_content.splitlines(keepends=True)
-            current_lines = []
-            current_len = 0
-            chunk_id = 0
-            for line in lines:
-                line_len = len(line)
-                if current_len + line_len > chunk_size and current_lines:
-                    chunk_text = ''.join(current_lines)
-                    line_no = get_line_number(line_starts[0], line_starts)
+                chunk_id += 1
+            else:
+                # 普通段落可能超长，需要切分
+                if len(seg_text) <= chunk_size:
                     chunk_obj = {
                         "id": str(chunk_id),
                         "chunk_name": doc_name,
-                        "content": chunk_text,
+                        "content": seg_text,
                         "chapter": "",
                         "section": "",
                         "subsection": "",
                         "section_path": "0.0.0",
-                        "source": line_no,
+                        "source": get_line_number(0, line_starts),
                         "file": source_file,
                         "chunk_id": str(chunk_id),
                         "file_id": file_id,
@@ -183,42 +203,73 @@ def parse_markdown_hierarchy(content, chunk_size, doc_name, source_file, file_id
                         "is_active": True,
                         "chunk_uid": f"{file_version_id}::{chunk_id}"
                     }
-                    img_paths = extract_image_paths(chunk_text)
+                    img_paths = extract_image_paths(seg_text)
                     if img_paths:
                         chunk_obj["image_paths"] = img_paths
-                    if chunk_text.strip():
-                        all_chunks.append(chunk_obj)
-                        chunk_id += 1
+                    all_chunks.append(chunk_obj)
+                    chunk_id += 1
+                else:
+                    # 按行切分普通段落（尽量保持句子完整）
+                    lines = seg_text.splitlines(keepends=True)
                     current_lines = []
                     current_len = 0
-                current_lines.append(line)
-                current_len += line_len
-            if current_lines:
-                chunk_text = ''.join(current_lines)
-                line_no = get_line_number(line_starts[0], line_starts)
-                chunk_obj = {
-                    "id": str(chunk_id),
-                    "chunk_name": doc_name,
-                    "content": chunk_text,
-                    "chapter": "",
-                    "section": "",
-                    "subsection": "",
-                    "section_path": "0.0.0",
-                    "source": line_no,
-                    "file": source_file,
-                    "chunk_id": str(chunk_id),
-                    "file_id": file_id,
-                    "file_version_id": file_version_id,
-                    "is_active": True,
-                    "chunk_uid": f"{file_version_id}::{chunk_id}"
-                }
-                img_paths = extract_image_paths(chunk_text)
-                if img_paths:
-                    chunk_obj["image_paths"] = img_paths
-                if chunk_text.strip():
-                    all_chunks.append(chunk_obj)
+                    for line in lines:
+                        line_len = len(line)
+                        if current_len + line_len > chunk_size and current_lines:
+                            chunk_text = ''.join(current_lines)
+                            if chunk_text.strip():
+                                chunk_obj = {
+                                    "id": str(chunk_id),
+                                    "chunk_name": doc_name,
+                                    "content": chunk_text,
+                                    "chapter": "",
+                                    "section": "",
+                                    "subsection": "",
+                                    "section_path": "0.0.0",
+                                    "source": get_line_number(0, line_starts),
+                                    "file": source_file,
+                                    "chunk_id": str(chunk_id),
+                                    "file_id": file_id,
+                                    "file_version_id": file_version_id,
+                                    "is_active": True,
+                                    "chunk_uid": f"{file_version_id}::{chunk_id}"
+                                }
+                                img_paths = extract_image_paths(chunk_text)
+                                if img_paths:
+                                    chunk_obj["image_paths"] = img_paths
+                                all_chunks.append(chunk_obj)
+                                chunk_id += 1
+                            current_lines = []
+                            current_len = 0
+                        current_lines.append(line)
+                        current_len += line_len
+                    if current_lines:
+                        chunk_text = ''.join(current_lines)
+                        if chunk_text.strip():
+                            chunk_obj = {
+                                "id": str(chunk_id),
+                                "chunk_name": doc_name,
+                                "content": chunk_text,
+                                "chapter": "",
+                                "section": "",
+                                "subsection": "",
+                                "section_path": "0.0.0",
+                                "source": get_line_number(0, line_starts),
+                                "file": source_file,
+                                "chunk_id": str(chunk_id),
+                                "file_id": file_id,
+                                "file_version_id": file_version_id,
+                                "is_active": True,
+                                "chunk_uid": f"{file_version_id}::{chunk_id}"
+                            }
+                            img_paths = extract_image_paths(chunk_text)
+                            if img_paths:
+                                chunk_obj["image_paths"] = img_paths
+                            all_chunks.append(chunk_obj)
+                            chunk_id += 1
         return all_chunks
 
+    # 有标题的情况
     titles.append((len(content), len(content), 0, ""))
     all_chunks = []
     chunk_id = 0
@@ -235,11 +286,13 @@ def parse_markdown_hierarchy(content, chunk_size, doc_name, source_file, file_id
         title_start, title_end, level, title_text = titles[i]
         next_title_start = titles[i+1][0]
 
+        # 更新标题计数
         if 2 <= level <= 6:
             heading_counters[level] += 1
             for j in range(level + 1, 7):
                 heading_counters[j] = 0
 
+        # 记录当前章节/小节名称
         if level == 1:
             cur_chapter_name = title_text.lstrip('#').strip()
         elif level == 2:
@@ -267,6 +320,7 @@ def parse_markdown_hierarchy(content, chunk_size, doc_name, source_file, file_id
             continue
 
         source_line = get_line_number(title_start, line_starts)
+        # 对标题下的内容进行表格分割
         segments = split_text_by_tables(full_block)
 
         for seg_text, is_table in segments:
@@ -274,7 +328,7 @@ def parse_markdown_hierarchy(content, chunk_size, doc_name, source_file, file_id
                 continue
 
             if is_table:
-                # 表格段落：不进行长度切分，直接作为一个块
+                # 表格段落：完整保存，不切分
                 chunk_obj = {
                     "id": str(chunk_id),
                     "chunk_name": doc_name,
@@ -290,7 +344,7 @@ def parse_markdown_hierarchy(content, chunk_size, doc_name, source_file, file_id
                     "file_version_id": file_version_id,
                     "is_active": True,
                     "chunk_uid": f"{file_version_id}::{chunk_id}",
-                    "table": seg_text
+                    "table": True          # 标记为表格块
                 }
                 img_paths = extract_image_paths(seg_text)
                 if img_paths:
@@ -392,13 +446,30 @@ def process_single_document_flow(input_file_path, chunk_size, file_id, file_vers
     )
     return all_chunks
 
+def append_to_json_array(file_path, new_objects):
+    """将 new_objects 列表追加到 file_path 的 JSON 数组中，保持数组格式"""
+    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            try:
+                existing = json.load(f)
+                if not isinstance(existing, list):
+                    existing = []
+            except json.JSONDecodeError:
+                existing = []
+    else:
+        existing = []
+    existing.extend(new_objects)
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(existing, f, ensure_ascii=False, indent=2)
+
 def main():
-    parser = argparse.ArgumentParser(description='Markdown文档分块处理工具（支持表格保护）')
+    parser = argparse.ArgumentParser(description='Markdown文档分块处理工具（支持表格整体保护）')
     parser.add_argument('--input', '-i', required=True, help='输入Markdown文件的完整路径 (.md)')
-    parser.add_argument('--output', '-o', required=True, help='输出JSON文件路径')
+    parser.add_argument('--output', '-o', required=True, help='输出JSON文件路径（完整数组格式）')
     parser.add_argument('--chunk_size', '-s', type=int, default=800, help='分块大小（字符数）')
     parser.add_argument('--file_id', required=True, help='文件ID')
     parser.add_argument('--file_version_id', required=True, help='文件版本ID')
+    parser.add_argument('--total_output', '-to', help='追加输出的JSON数组文件路径（标准JSON数组格式）', default=None)
     args = parser.parse_args()
 
     start_time = time.time()
@@ -412,6 +483,11 @@ def main():
         save_json(chunks, args.output)
         print(f"✅ 文档分块完成，结果已保存到 {args.output}")
         print(f"📊 共生成 {len(chunks)} 个文本块")
+
+        if args.total_output:
+            os.makedirs(os.path.dirname(os.path.abspath(args.total_output)), exist_ok=True)
+            append_to_json_array(args.total_output, chunks)
+            print(f"✅ 已将 {len(chunks)} 个块追加到 {args.total_output} (JSON数组格式)")
     else:
         print("⚠️ 未生成任何分块结果")
 
